@@ -16,6 +16,9 @@
     "privileged": [
         "SYS_ADMIN"
     ],
+    "devices": [
+        "/dev/i2c-1"
+    ],
     "stage": "experimental",
     "full_access": true,
     "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics%20OLED%20Display",
