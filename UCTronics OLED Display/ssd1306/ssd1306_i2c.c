@@ -280,7 +280,7 @@ void OLED_Clear(void)
 */
 void LCD_DisplayTemperature(void)
 {
-  get_option("tempeture_unit");
+  // get_option("tempeture_unit");
   unsigned char symbol = 0;
   unsigned int temp = 0;
   FILE *fp;
