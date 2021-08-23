@@ -67,11 +67,12 @@ until false; do
   }
   if ls /dev/i2c-1; then 
     echo $(ls /dev/*i2c*)
-    echo "Found i2c access! Loading C Script for UCTRONICS OLED";
+    echo "Found i2c access!";
+    echo "Loading C Script for UCTRONICS OLED...";
     cd /UCTronics_OLED/
     make clean
     make 
-    echo "UCTRONICS OLD Display should now be showing information...";
+    echo "UCTRONICS OLD Display should now be showing information?";
     ./display
   else 
     echo "I don't see I2C."
