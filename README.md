@@ -1,5 +1,5 @@
-# Home Assistant Add-ons
+# Home Assistant Add-ons (https://github.com/garethcheyne/HomeAssistant)
 
-UNDER FULL DEVELOPMENT
-
-Collection
+## Add-ons
+### UCTRONICS OLED Display
+Currently testing.
