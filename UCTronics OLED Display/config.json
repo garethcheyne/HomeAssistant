@@ -1,8 +1,8 @@
 {
-    "name": "HassOS UCTRONICS OLED LDisplay",
-    "version": "0.13",
-    "slug": "hassos_uctronice_oled_display",
-    "description": "This addon will emable I2c dbus, and present data to the UCTRONICs OLED Display.",
+    "name": "UCTRONICS OLED Display",
+    "version": "2021.15.23",
+    "slug": "uctronics_oled_display",
+    "description": "Add on for Home Assistant to use the OLED for UCTronics Pi Rack \n Install https://github.com/adamoutler/HassOSConfigurator/tree/main/Pi4EnableI2C first and follow the instructions to enable I2C.",
     "arch": [
         "armhf",
         "armv7",
