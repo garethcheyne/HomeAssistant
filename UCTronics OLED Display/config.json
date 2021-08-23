@@ -1,8 +1,8 @@
 {
     "name": "UCTRONICS OLED Display",
-    "version": "2021.08.23.009",
+    "version": "2021.08.23.010",
     "slug": "uctronics_oled_display",
-    "description": "This addon will utilise code from Adam Outler, https://github.com/adamoutler/HassOSConfigurator/tree/main/Pi4EnableI2C to first emable the I2C interface, you will need to reboot twice as per his documentation. \n After I2C is enabled then the display will finally show.",
+    "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack with the ssd1306 OLED.",
     "arch": [
         "armhf",
         "armv7",
