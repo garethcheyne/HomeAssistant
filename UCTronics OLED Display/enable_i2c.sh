@@ -70,7 +70,7 @@ until false; do
     cd /Addon/
     make clean
     make ./display
-    echo "Utronics OLD Display should now be showing information...";
+    echo "UCTRONICS OLD Display should now be showing information...";
   else 
     echo "I don't see I2C."
     performWork sda1
