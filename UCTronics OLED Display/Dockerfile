@@ -5,6 +5,7 @@ ENV LANG C.UTF-8
 RUN set -xe \
     && apk add --no-cache build-base git i2c-tools nano linux-headers cmake json-c-dev \
     && mkdir /UCTronics_OLED
+&& mkdir //UCTronics_OLED_dev
 
 # Setup Json for C
 #RUN git clone https://github.com/json-c/json-c.git && mkdir /json-c-build && cd /json-c-build && cmake ../json-c && make && make install
@@ -12,6 +13,8 @@ RUN set -xe \
 
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
+
+COPY /ssd1306_dev/* /UCTronics_OLED_dev/
 
 COPY run.sh /
 WORKDIR /data
