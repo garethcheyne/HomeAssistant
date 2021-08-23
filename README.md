@@ -1,5 +1,5 @@
-# Home Assistant Addons
+# Home Assistant Add-ons
 
-UNDER FULL DEVELIPMENT
+UNDER FULL DEVELOPMENT
 
 Collection
