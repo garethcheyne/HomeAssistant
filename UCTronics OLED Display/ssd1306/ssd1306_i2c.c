@@ -20,6 +20,27 @@
 char IPSource[20] = {0};
 int i2cd;
 
+void get_option(unsigned char key)
+{
+  char *json;
+  int fd;
+  struct json_object *obj;
+  struct stat st;
+
+  fd = open("/data/options.json", O_RDONLY);
+  json = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+  close(fd);
+
+  obj = json_tokener_parse(json);
+
+  json_object_object_foreach(obj, key, val)
+  {
+    printf("key = %s value = %s\n", key, json_object_get_string(val));
+  }
+
+  return 0;
+}
+
 // Init SSD1306
 void ssd1306_begin(unsigned int vccstate, unsigned int i2caddr)
 {
@@ -259,6 +280,7 @@ void OLED_Clear(void)
 */
 void LCD_DisplayTemperature(void)
 {
+  get_option("tempeture_unit");
   unsigned char symbol = 0;
   unsigned int temp = 0;
   FILE *fp;
