@@ -17,7 +17,7 @@
     ],
     "stage": "experimental",
     "full_access": true,
-    "url": "",
+    "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics%20OLED%20Display",
     "boot": "manual",
     "options": {},
     "schema": {}
