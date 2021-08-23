@@ -14,7 +14,7 @@ RUN set -xe \
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
 
-COPY /ssd1306_dev/* /UCTronics_OLED_dev/
+#COPY /ssd1306_dev/* /UCTronics_OLED_dev/
 
 COPY run.sh /
 WORKDIR /data
