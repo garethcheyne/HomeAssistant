@@ -299,7 +299,8 @@ unsigned char Obaintemperature(void)
   fgets(buff, sizeof(buff), fd);
   sscanf(buff, "%d", &temp);
   fclose(fd);
-  return temp / 1000 * 1.8 + 32;
+  // return temp / 1000 * 1.8 + 32; F
+  return temp / 1000; //Celcius
 }
 
 /*
