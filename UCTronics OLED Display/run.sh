@@ -9,6 +9,7 @@ nc -lk -p 8099 -e  echo -e 'HTTP/1.1 200 OK\r\nServer: DeskPiPro\r\nDate:$(date)
 
 config='dtparam=i2c_vc=on'
 config2='dtparam=i2c_arm=on'
+
 until false; do
   set +e
   mkdir /tmp 2>/dev/null
@@ -66,12 +67,12 @@ until false; do
   }
   if ls /dev/i2c-1; then 
     echo $(ls /dev/*i2c*)
-    echo "Found i2c access!  Nothing to do!  You can remove this add-on.";
+    echo "Found i2c access! Loading C Script for UCTRONICS OLED";
     cd /UCTronics_OLED/
     make clean
     make 
-    ./display
     echo "UCTRONICS OLD Display should now be showing information...";
+    ./display
   else 
     echo "I don't see I2C."
     performWork sda1
@@ -79,7 +80,6 @@ until false; do
     performWork mmcblk0p1
     echo "This Configurator did it's job. Perform a hard-power-off reboot now."
     echo "You will need to reboot twice total, once to place the files, and again to activate the I2C."
-  fi
-  
+  fi  
   sleep 99999;
 done
