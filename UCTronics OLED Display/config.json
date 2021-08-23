@@ -1,6 +1,6 @@
 {
     "name": "UCTRONICS OLED Display",
-    "version": "2021.08.23.008",
+    "version": "2021.08.23.009",
     "slug": "uctronics_oled_display",
     "description": "This addon will utilise code from Adam Outler, https://github.com/adamoutler/HassOSConfigurator/tree/main/Pi4EnableI2C to first emable the I2C interface, you will need to reboot twice as per his documentation. \n After I2C is enabled then the display will finally show.",
     "arch": [
@@ -20,7 +20,7 @@
         "/dev/i2c-1"
     ],
     "stage": "experimental",
-    "full_access": true,
+    "full_access": false,
     "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics%20OLED%20Display",
     "boot": "auto",
     "options": {},
