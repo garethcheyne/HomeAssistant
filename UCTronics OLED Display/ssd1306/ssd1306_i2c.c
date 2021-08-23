@@ -24,6 +24,7 @@ int i2cd;
 void get_option(char key)
 {
   char buffer[1024];
+  FILE *fp;
   struct json_object *parsed_json;
   struct json_object *temperature_unit;
   size_t n_friends;
