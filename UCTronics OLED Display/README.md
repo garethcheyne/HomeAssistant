@@ -6,7 +6,10 @@ This addon will utilise code from Adam Outler, https://github.com/adamoutler/Has
 After I2C is enabled then the display will finally show.
 
 
-First Step
-Enable I2C using this HassOS I2C Configurator addon.. here Support is provided on the Home Assistant Community forums, here Make Sure You REBOOT TWICE
+## First Step
+Disable "Protection Mode", and start the addon, this will allow Adam's script to enable I2C interface. 
+MAKE SURE YOU REBOOT TWICE
 
-Then you can enable this addon
+## Second Step.
+Enable protection made, 
+Enable I2C using this HassOS I2C Configurator addon.. here Support is provided on the Home Assistant Community forums, here Make Sure You REBOOT TWICE
