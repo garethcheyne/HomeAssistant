@@ -16,7 +16,7 @@ until false; do
   ls -al /dev/ 2>&1
   mkdir /tmp/mmcblk0p1 /tmp/sda1 2> /dev/null
   if [ ! -e /dev/sda1 ] && [ ! -e /dev/sdb1 ] && [ ! -e /dev/mmcblk0p1 ]; then 
-    echo "nothing to do. Is protection mode enabled?  You can't run this without disabling protection mode";
+    echo "Nothing to do. Is protection mode enabled?  You can't run this without disabling protection mode";
     while true; do sleep 99999; done;
   fi;
 
@@ -67,9 +67,10 @@ until false; do
   if ls /dev/i2c-1; then 
     echo $(ls /dev/*i2c*)
     echo "Found i2c access!  Nothing to do!  You can remove this add-on.";
-    cd /Addon/
+    cd /UCTronics_OLED/
     make clean
-    make ./display
+    make 
+    ./display
     echo "UCTRONICS OLD Display should now be showing information...";
   else 
     echo "I don't see I2C."
