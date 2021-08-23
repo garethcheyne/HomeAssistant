@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <json-c/json.h>
 #include <string.h>
 #include <sys/sysinfo.h>
 #include <sys/vfs.h>
@@ -20,25 +21,24 @@
 char IPSource[20] = {0};
 int i2cd;
 
-void get_option(unsigned char key)
+void get_option(char key)
 {
-  char *json;
-  int fd;
-  struct json_object *obj;
-  struct stat st;
+  char buffer[1024];
+  struct json_object *parsed_json;
+  struct json_object *temperature_unit;
+  size_t n_friends;
 
-  fd = open("/data/options.json", O_RDONLY);
-  json = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-  close(fd);
+  size_t i;
 
-  obj = json_tokener_parse(json);
+  fp = fopen("/data/options.json", "r");
+  fread(buffer, 1024, 1, fp);
+  fclose(fp);
 
-  json_object_object_foreach(obj, key, val)
-  {
-    printf("key = %s value = %s\n", key, json_object_get_string(val));
-  }
+  parsed_json = json_tokener_parse(buffer);
 
-  return 0;
+  json_object_object_get_ex(parsed_json, "temperature_unit", &temperature_unit);
+
+  printf("temperature_unit: %s\n", json_object_get_string(temperature_unit));
 }
 
 // Init SSD1306
