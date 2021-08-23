@@ -72,7 +72,7 @@ until false; do
     cd /UCTronics_OLED/
     make clean
     make 
-    echo "UCTRONICS OLD Display should now be showing information?";
+    echo "UCTRONICS OLED Display should now be showing information?";
     ./display
   else 
     echo "I don't see I2C."
