@@ -1,7 +1,7 @@
 // HOWTO: https://developers.home-assistant.io/docs/add-ons/tutorial/
 {
     "name": "UCTRONICS OLED Display",
-    "version": "2021.15.23",
+    "version": "2021.15.23.001",
     "slug": "uctronics_oled_display",
     "description": "Add on for Home Assistant to use the OLED for UCTronics Pi Rack \n Install https://github.com/adamoutler/HassOSConfigurator/tree/main/Pi4EnableI2C first and follow the instructions to enable I2C.",
     "arch": [
