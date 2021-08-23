@@ -1,0 +1,24 @@
+{
+    "name": "HassOS UCTRONICS OLED LDisplay",
+    "version": "0.13",
+    "slug": "hassos_uctronice_oled_display",
+    "description": "This addon will emable I2c dbus, and present data to the UCTRONICs OLED Display.",
+    "arch": [
+        "armhf",
+        "armv7",
+        "aarch64"
+    ],
+    "startup": "once",
+    "auth_api": true,
+    "ingress": true,
+    "app_armor": false,
+    "privileged": [
+        "SYS_ADMIN"
+    ],
+    "stage": "experimental",
+    "full_access": true,
+    "url": "",
+    "boot": "manual",
+    "options": {},
+    "schema": {}
+}
