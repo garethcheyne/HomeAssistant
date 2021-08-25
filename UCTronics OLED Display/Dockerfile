@@ -7,9 +7,22 @@ RUN set -xe \
     && mkdir /UCTronics_OLED \
     && mkdir /UCTronics_OLED_dev
 
-# Setup Json for C
-#RUN git clone https://github.com/json-c/json-c.git && mkdir /json-c-build && cd /json-c-build && cmake ../json-c && make && make install
 
+# RUN set -xe \
+#     && apk add --no-cache build-base git i2c-tools nano linux-headers pacman python3 \
+#     && mkdir /UCTronics_OLED \
+#     && mkdir /UCTronics_OLED_dev
+
+#
+# install python3
+# sudo pip3 install adafruit-circuitpython-ssd1306
+# RUN curl -O https://bootstrap.pypa.io/get-pip.py
+# RUN python get-pip.py
+# RUN pip3 install adafruit-circuitpython-ssd1306
+# RUN pip3 install RPi.GPIO
+
+# sudo apt-get install python3-pip
+# sudo apt-get install python3-pil
 
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
