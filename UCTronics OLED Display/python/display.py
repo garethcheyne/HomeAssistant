@@ -36,7 +36,7 @@ draw = ImageDraw.Draw(image)
 
 # Load default font.
 # font = ImageFont.load_default()
-p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 9)
+p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)
 h1_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
 
 # Draw some shapes.
@@ -71,20 +71,8 @@ def info():
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
 
         stats = get_status()
-        cmd = "hostname -I | cut -d' ' -f1"
-        IP = subprocess.check_output(cmd, shell=True).decode("utf-8")
-
-        cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
-        CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
-
-        cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'"
-        MemUsage = subprocess.check_output(cmd, shell=True).decode("utf-8")
-        
-        cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''
-        Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
         # Write four lines of text.
-
         draw.text((x, top + 0), "IP: " + stats['ip4'], font=p, fill=255)
         draw.text((x, top + 8), stats['cpu'], font=p, fill=255)
         draw.text((x, top + 16), stats['mem'], font=p, fill=255)
@@ -94,7 +82,6 @@ def info():
         disp.image(image)
         disp.show()
         time.sleep(0.1)
-
 
 
 def get_status():
