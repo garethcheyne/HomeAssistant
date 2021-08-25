@@ -47,6 +47,10 @@ bottom = height - padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 0
 
+def load():
+    logo()
+    info()
+
 def logo():
 
     # Draw a black filled box to clear the image.
@@ -56,7 +60,7 @@ def logo():
     disp.image(image)
     disp.show() 
     time.sleep(10)
-    info()
+    
 
 def info():
     while True:
@@ -88,3 +92,7 @@ def info():
         disp.image(image)
         disp.show()
         time.sleep(0.1)
+
+
+if __name__ == "__main__":
+    load()
