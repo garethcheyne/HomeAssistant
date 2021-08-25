@@ -37,17 +37,17 @@ draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
 # Load default font.
 #font = ImageFont.load_default()
-#font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 28)
-font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
-
+p_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
+h1_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
 
 # Draw text.
-draw.text((0, 5), "Home Assitant", font=font, fill=255)
+draw.text((0, 5), "Home Assitant", font=h1_bold, fill=255)
+
   # Display image.
 disp.image(image)
 disp.show()
 # Pause briefly before drawing next frame.
-time.sleep(3)
+time.sleep(10)
 
 font = ImageFont.load_default()
 # Draw some shapes.
@@ -57,6 +57,8 @@ top = padding
 bottom = height - padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 0
+
+
 while True:
     # Draw a black filled box to clear the image.
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
@@ -65,19 +67,22 @@ while True:
     # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
     cmd = "hostname -I | cut -d' ' -f1"
     IP = subprocess.check_output(cmd, shell=True).decode("utf-8")
+
     cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
     CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
+
     cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'"
     MemUsage = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    
     cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''
     Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
     # Write four lines of text.
 
-    draw.text((x, top + 0), "IP: " + IP, font=font, fill=255)
-    draw.text((x, top + 8), CPU, font=font, fill=255)
-    draw.text((x, top + 16), MemUsage, font=font, fill=255)
-    draw.text((x, top + 25), Disk, font=font, fill=255)
+    draw.text((x, top + 0), "IP: " + IP, font=p_bold, fill=255)
+    draw.text((x, top + 8), CPU, font=p_bold, fill=255)
+    draw.text((x, top + 16), MemUsage, font=p_bold, fill=255)
+    draw.text((x, top + 25), Disk, font=p_bold, fill=255)
 
     # Display image.
     disp.image(image)
