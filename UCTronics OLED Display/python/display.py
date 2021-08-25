@@ -13,6 +13,7 @@ from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
+
 # Create the I2C interface.
 i2c = busio.I2C(SCL, SDA)
 # Create the SSD1306 OLED class.
@@ -26,8 +27,14 @@ disp.show()
 
 # Create blank image for drawing.
 # Make sure to create image with mode '1' for 1-bit color.
+oled = {
+    'width': disp.width, 
+    'height': disp.height
+    }
+
 width = disp.width
 height = disp.height
+
 image = Image.new("1", (width, height))
 
 # Get drawing object to draw on image.
@@ -38,10 +45,18 @@ draw = ImageDraw.Draw(image)
 # font = ImageFont.load_default()
 p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)
 h1_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
+icons = ImageFont.truetype("/fonts/segoe", 20)
+md_icons = ImageFont.truetype("/fonts/materialIcons-regular.ttf", 20)
 
 # Draw some shapes.
 # First define some constants to allow easy resizing of shapes.
+style = {
+    'boarder': 3,
+    'padding': -2
+}
+
 padding = -2
+border = 3
 top = padding
 bottom = height - padding
 # Move left to right keeping track of the current x position for drawing shapes.
@@ -53,10 +68,13 @@ def load():
 
 def logo():
 
-    # Draw a black filled box to clear the image.
-    draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    # Draw a padded black filled box with style.border width.
+    draw.rectangle((0, 0, oled.width, oled.height), outline=255, fill=255)
+    draw.rectangle((style.border, style.border, oled.width - style.border, oled.height - style.border), outline=0, fill=0)
 
     draw.text((0, 5), "Home Assitant", font=h1_bold, fill=255)
+    draw.text((5, 5), "q w e r", font=icons, fill=255)
+    draw.text((10, 5), "q w e r", font=md_icons, fill=255)
     disp.image(image)
     disp.show() 
     time.sleep(10)
