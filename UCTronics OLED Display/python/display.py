@@ -36,7 +36,7 @@ draw = ImageDraw.Draw(image)
 
 # Load default font.
 # font = ImageFont.load_default()
-p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
+p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 9)
 h1_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
 
 # Draw some shapes.
@@ -85,28 +85,29 @@ def info():
 
         # Write four lines of text.
 
-        draw.text((x, top + 0), "IP: " + stats.ip4, font=p, fill=255)
-        draw.text((x, top + 8), CPU, font=p, fill=255)
-        draw.text((x, top + 16), MemUsage, font=p, fill=255)
-        draw.text((x, top + 25), Disk, font=p, fill=255)
+        draw.text((x, top + 0), "IP: " + stats['ip4'], font=p, fill=255)
+        draw.text((x, top + 8), stats['cpu'], font=p, fill=255)
+        draw.text((x, top + 16), stats['mem']e, font=p, fill=255)
+        draw.text((x, top + 25), stats['dsk'], font=p, fill=255)
 
         # Display image.
         disp.image(image)
         disp.show()
         time.sleep(0.1)
 
-def exe_cmd(cmd):
-    return subprocess.check_output(cmd, shell=True).decode("utf-8")
+
 
 def get_status():
-    stats = [
-        {'ip4': exe_cmd("hostname -I | cut -d' ' -f1")},
-        {'cpu': exe_cmd("top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'")},
-        {'dsk': exe_cmd('df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\'')},
-        {'mem': exe_cmd("free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'")}        
-    ]
+    stats = {
+        'ip4': shell_cmd("hostname -I | cut -d' ' -f1"),
+        'cpu': shell_cmd("top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"),
+        'dsk': shell_cmd('df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''),
+        'mem': shell_cmd("free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'")
+        }            
     return stats
 
+def shell_cmd(cmd):
+    return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 if __name__ == "__main__":
     load()
