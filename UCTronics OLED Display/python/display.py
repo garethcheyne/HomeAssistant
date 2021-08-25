@@ -87,7 +87,7 @@ def info():
 
         draw.text((x, top + 0), "IP: " + stats['ip4'], font=p, fill=255)
         draw.text((x, top + 8), stats['cpu'], font=p, fill=255)
-        draw.text((x, top + 16), stats['mem']e, font=p, fill=255)
+        draw.text((x, top + 16), stats['mem'], font=p, fill=255)
         draw.text((x, top + 25), stats['dsk'], font=p, fill=255)
 
         # Display image.
