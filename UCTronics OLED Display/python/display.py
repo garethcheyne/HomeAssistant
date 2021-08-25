@@ -69,6 +69,8 @@ def info():
 
         # Shell scripts for system monitoring from here:
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
+
+        stats = get_status()
         cmd = "hostname -I | cut -d' ' -f1"
         IP = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
@@ -83,7 +85,7 @@ def info():
 
         # Write four lines of text.
 
-        draw.text((x, top + 0), "IP: " + IP, font=p, fill=255)
+        draw.text((x, top + 0), "IP: " + stats.ip4, font=p, fill=255)
         draw.text((x, top + 8), CPU, font=p, fill=255)
         draw.text((x, top + 16), MemUsage, font=p, fill=255)
         draw.text((x, top + 25), Disk, font=p, fill=255)
@@ -92,6 +94,18 @@ def info():
         disp.image(image)
         disp.show()
         time.sleep(0.1)
+
+def exe_cmd(cmd):
+    return subprocess.check_output(cmd, shell=True).decode("utf-8")
+
+def get_status():
+    stats = [
+        {'ip4': exe_cmd("hostname -I | cut -d' ' -f1")},
+        {'cpu': exe_cmd("top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'")},
+        {'dsk': exe_cmd('df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\'')},
+        {'mem': exe_cmd("free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'")}        
+    ]
+    return stats
 
 
 if __name__ == "__main__":
