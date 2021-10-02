@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-profile hassosi2cconfiguratoraddon flags=(attach_disconnected,mediate_deleted) {
+profile uctronics_oled_display flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
   
   capability,
