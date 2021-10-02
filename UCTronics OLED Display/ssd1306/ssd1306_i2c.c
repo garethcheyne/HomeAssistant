@@ -27,7 +27,7 @@ void ssd1306_begin(unsigned int vccstate, unsigned int i2caddr)
   FILE *fp;
   unsigned char buffer[20] = {0};
   unsigned char data[20] = {0};
-  fp = popen("find /dev/i2c-*", "r");
+  fp = popen("find /dev/i2c-1", "r");
   fgets(buffer, sizeof(buffer), fp);
   pclose(fp);
   sscanf(buffer, "%s", data);
