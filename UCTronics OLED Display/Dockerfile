@@ -30,6 +30,9 @@ COPY /ssd1306/* /UCTronics_OLED/
 COPY /ssd1306_dev/* /UCTronics_OLED_dev/
 
 COPY run.sh /
+COPY start.sh /
 WORKDIR /data
 RUN chmod a+x /run.sh
-CMD [ "/run.sh" ]
+RUN chmod a+x /start.sh
+
+#CMD [ "/run.sh" ]
