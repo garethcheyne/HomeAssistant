@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <json-c/json.h>
 #include <string.h>
 #include <sys/sysinfo.h>
 #include <sys/vfs.h>
@@ -21,27 +20,6 @@
 char IPSource[20] = {0};
 int i2cd;
 
-void get_option(char key)
-{
-  char buffer[1024];
-  FILE *fp;
-  struct json_object *parsed_json;
-  struct json_object *temperature_unit;
-  size_t n_friends;
-
-  size_t i;
-
-  fp = fopen("/data/options.json", "r");
-  fread(buffer, 1024, 1, fp);
-  fclose(fp);
-
-  parsed_json = json_tokener_parse(buffer);
-
-  json_object_object_get_ex(parsed_json, "temperature_unit", &temperature_unit);
-
-  printf("temperature_unit: %s\n", json_object_get_string(temperature_unit));
-}
-
 // Init SSD1306
 void ssd1306_begin(unsigned int vccstate, unsigned int i2caddr)
 {
@@ -49,7 +27,7 @@ void ssd1306_begin(unsigned int vccstate, unsigned int i2caddr)
   FILE *fp;
   unsigned char buffer[20] = {0};
   unsigned char data[20] = {0};
-  fp = popen("find /dev/i2c-*", "r");
+  fp = popen("find /dev/i2c-1", "r");
   fgets(buffer, sizeof(buffer), fp);
   pclose(fp);
   sscanf(buffer, "%s", data);
@@ -281,7 +259,6 @@ void OLED_Clear(void)
 */
 void LCD_DisplayTemperature(void)
 {
-  // get_option("tempeture_unit");
   unsigned char symbol = 0;
   unsigned int temp = 0;
   FILE *fp;
@@ -322,8 +299,7 @@ unsigned char Obaintemperature(void)
   fgets(buff, sizeof(buff), fd);
   sscanf(buff, "%d", &temp);
   fclose(fd);
-  // return temp / 1000 * 1.8 + 32; F
-  return temp / 1000; //Celcius
+  return temp / 1000 * 1.8 + 32;
 }
 
 /*
