@@ -40,5 +40,8 @@ if [ "$DISABLE_AUTO_START" = false ]; then
             exec run.sh
         fi
     fi
-    sleep 99999;
+    bashio::log.info "No Auto Run"
+    cd /UCTronics_OLED_F/
+    make clean
+    make 
 fi
