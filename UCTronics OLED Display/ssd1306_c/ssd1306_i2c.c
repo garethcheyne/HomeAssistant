@@ -272,6 +272,7 @@ void LCD_DisplayTemperature(void)
   OLED_Clear();                     //Remove the interface
   OLED_DrawBMP(0, 0, 128, 4, BMP, 0);
   OLED_ShowString(0, 0, IPSource, 8); //Send the IP address to the lower machine
+
   if (temp >= 100)
   {
     OLED_ShowChar(50, 3, temp / 100 + '0', 8);     //According to the temperature
@@ -280,7 +281,7 @@ void LCD_DisplayTemperature(void)
   }
   else if (temp < 100 && temp >= 10)
   {
-    OLED_ShowChar(58, 3, temp / 10 + '0', 8); //According to the temperature
+    OLED_ShowChar(50, 3, temp / 10 + '0', 8); //According to the temperature
     OLED_ShowChar(66, 3, temp % 10 + '0', 8);
   }
   else
