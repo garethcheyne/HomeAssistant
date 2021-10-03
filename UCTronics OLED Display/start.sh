@@ -34,14 +34,16 @@ if [ "$DISABLE_AUTO_START" = false ]; then
             cd /UCTronics_OLED_F/
             make clean
             make 
-            ashio::log.info "UCTRONICS OLED Display should now be showing information?";
+            bashio::log.info "UCTRONICS OLED Display should now be showing information?";
             ./display
         else
             exec run.sh
         fi
     fi
+else
     bashio::log.info "No Auto Run"
     cd /UCTronics_OLED_F/
     make clean
     make 
+    sleep 99999;
 fi
