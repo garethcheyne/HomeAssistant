@@ -10,7 +10,7 @@ bashio::log.info "Starting UCTronics OLED App..."
 bashio::log.info "Tempature Unit = ${TEMP_UNIT}"
 bashio::log.info "Disable Auto Start = ${DISABLE_AUTO_START}"
 
-if [ "$DISABLE_AUTO_START" = false ]; then
+if [ "$DISABLE_AUTO_START" = "false" ]; then
 
     if [ "$TEMP_UNIT" = "C" ]; then
         if ls /dev/i2c-1; then 
@@ -20,7 +20,7 @@ if [ "$DISABLE_AUTO_START" = false ]; then
             cd /UCTronics_OLED_C/
             make clean
             make 
-            echo "UCTRONICS OLED Display should now be showing information?";
+            bashio::log.info "UCTRONICS OLED Display should now be showing information?";
             ./display
         else
             exec run.sh
@@ -34,7 +34,7 @@ if [ "$DISABLE_AUTO_START" = false ]; then
             cd /UCTronics_OLED_F/
             make clean
             make 
-            echo "UCTRONICS OLED Display should now be showing information?";
+            ashio::log.info "UCTRONICS OLED Display should now be showing information?";
             ./display
         else
             exec run.sh
