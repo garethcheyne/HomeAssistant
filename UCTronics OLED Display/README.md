@@ -17,3 +17,7 @@ This addon will utilise code from Adam Outler, [GitHub adamoutler](https://githu
 3. Check the "Log" and see if there are any error.
 4. Your OLED should be displaying.
 
+## Todo
+- Get Disable Auto Start to work, so that you can edit the the C code.
+- Set C Tempature Unit
+- Give option is use own python script, so user can chose what they want to dispaly.
