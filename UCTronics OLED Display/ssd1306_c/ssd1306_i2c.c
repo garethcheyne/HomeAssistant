@@ -281,8 +281,11 @@ void LCD_DisplayTemperature(void)
   }
   else if (temp < 100 && temp >= 10)
   {
-    OLED_ShowChar(50, 3, temp / 10 + '0', 8); //According to the temperature
+    OLED_ShowChar(50, 3, temp / 100 + '0', 8);     //According to the temperature
+    OLED_ShowChar(58, 3, temp / 10 % 10 + '0', 8); //According to the temperature
     OLED_ShowChar(66, 3, temp % 10 + '0', 8);
+    // OLED_ShowChar(58, 3, temp / 10 + '0', 8); //According to the temperature
+    // OLED_ShowChar(66, 3, temp % 10 + '0', 8);
   }
   else
   {
