@@ -3,4 +3,8 @@ set -e
 
 bashio::log.info "Starting UCTronics OLED App...
 
-echo "option temperature_unit \"${temperature_unit}\";"
+TEMP_UNIT = $(bashio::config 'temperature_unit')
+AUTO_START = $(bashio::config 'stop_auto_run')
+
+echo "Temp Unit \"${TEMP_UNIT}\";"
+echo "Temp Unit \"${AUTO_START}\";"

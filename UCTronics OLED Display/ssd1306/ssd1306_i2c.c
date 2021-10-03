@@ -300,6 +300,7 @@ unsigned char Obaintemperature(void)
   sscanf(buff, "%d", &temp);
   fclose(fd);
   // return temp / 1000 * 1.8 + 32; F
+  printf("Temp", temp);
   return temp / 1000; //Celcius
 }
 
