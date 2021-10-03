@@ -10,7 +10,7 @@ bashio::log.info "Starting UCTronics OLED App..."
 bashio::log.info "Tempature Unit = ${TEMP_UNIT}"
 bashio::log.info "Disable Auto Start = ${DISABLE_AUTO_START}"
 
-if [ "$DISABLE_AUTO_START" = "false" ]; then
+if [ "$DISABLE_AUTO_START" = false ]; then
 
     if [ "$TEMP_UNIT" = "C" ]; then
         if ls /dev/i2c-1; then 

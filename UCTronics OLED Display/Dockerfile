@@ -25,9 +25,9 @@ RUN set -xe \
 # sudo apt-get install python3-pil
 
 # Copy over the C project
-COPY /ssd1306/* /UCTronics_OLED_F/
+COPY /ssd1306_f/* /UCTronics_OLED_F/
 
-COPY /ssd1306_dev/* /UCTronics_OLED_C/
+COPY /ssd1306_c/* /UCTronics_OLED_C/
 
 COPY run.sh /
 COPY start.sh /
