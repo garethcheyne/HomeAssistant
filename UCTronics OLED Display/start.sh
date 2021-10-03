@@ -4,7 +4,7 @@ set -e
 CONFIG_PATH=/data/options.json
 
 TEMP_UNIT="$(bashio::config 'temperature_unit')"
-AUTO_START="$(bashio::config 'stop_auto_run')"
+DISABLE_AUTO_START="$(bashio::config 'stop_auto_run')"
 
 bashio::log.info "Starting UCTronics OLED App..."
 bashio::log.info "Tempature Unit = ${TEMP_UNIT}"
