@@ -3,9 +3,7 @@ FROM $BUILD_FROM
 ENV LANG C.UTF-8
 
 RUN set -xe \
-    && apk add --no-cache build-base git i2c-tools nano linux-headers cmake json-c-dev \
-    && mkdir /UCTronics_OLED \
-    && mkdir /UCTronics_OLED_dev
+    && apk add --no-cache build-base git i2c-tools nano linux-headers cmake pacman python3
 
 
 # RUN set -xe \

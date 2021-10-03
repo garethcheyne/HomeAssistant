@@ -263,14 +263,24 @@ void LCD_DisplayTemperature(void)
   unsigned int temp = 0;
   FILE *fp;
   unsigned char buffer[80] = {0};
-  temp = Obaintemperature();                                                  //Gets the temperature of the CPU
-  fp = popen("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'", "r"); //Gets the load on the CPU
-  fgets(buffer, sizeof(buffer), fp);                                          //Read the CPU load
+
+  //Gets the temperature of the CPU
+  temp = Obaintemperature();
+
+  //Gets the load on the CPU
+  fp = popen("grep -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'", "r");
+
+  // Read CPU Load
+  fgets(buffer, sizeof(buffer), fp);
   pclose(fp);
   buffer[3] = '\0';
-  strcpy(IPSource, GetIpAddress()); //Get the IP address of the device's wireless network card
-  OLED_Clear();                     //Remove the interface
+
+  //Get the IP address of the device's wireless network card
+  strcpy(IPSource, GetIpAddress());
+
+  OLED_Clear(); //Remove the interface
   OLED_DrawBMP(0, 0, 128, 4, BMP, 0);
+
   OLED_ShowString(0, 0, IPSource, 8); //Send the IP address to the lower machine
 
   if (temp >= 100)
@@ -281,17 +291,15 @@ void LCD_DisplayTemperature(void)
   }
   else if (temp < 100 && temp >= 10)
   {
-    OLED_ShowChar(50, 3, temp / 100 + '0', 8);     //According to the temperature
-    OLED_ShowChar(58, 3, temp / 10 % 10 + '0', 8); //According to the temperature
+    OLED_ShowChar(58, 3, temp / 10 + '0', 8); //According to the temperature
     OLED_ShowChar(66, 3, temp % 10 + '0', 8);
-    // OLED_ShowChar(58, 3, temp / 10 + '0', 8); //According to the temperature
-    // OLED_ShowChar(66, 3, temp % 10 + '0', 8);
   }
   else
   {
     OLED_ShowChar(66, 3, temp + '0', 8);
   }
-  OLED_ShowString(87, 3, buffer, 8); //Display CPU load
+  //Display CPU load at end of line
+  OLED_ShowString(87, 3, buffer, 8);
 }
 
 unsigned char Obaintemperature(void)
