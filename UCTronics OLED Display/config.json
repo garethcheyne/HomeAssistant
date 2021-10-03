@@ -1,6 +1,6 @@
 {
     "name": "UCTRONICS OLED Display",
-    "version": "2021.10.03.041",
+    "version": "2021.10.03.045",
     "slug": "uctronics_oled_display",
     "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
     "arch": [
@@ -26,10 +26,12 @@
     "boot": "auto",
     "options": {
         "temperature_unit": "C",
-        "stop_auto_run": true
+        "stop_auto_run": false,
+        "run_dev": false
     },
     "schema": {
         "temperature_unit": "list(C|F)?",
-        "stop_auto_run": "bool"
+        "stop_auto_run": "bool",
+        "run_dev": "bool"
     }
 }

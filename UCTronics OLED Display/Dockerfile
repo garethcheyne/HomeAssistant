@@ -25,9 +25,9 @@ RUN set -xe \
 # sudo apt-get install python3-pil
 
 # Copy over the C project
-COPY /ssd1306/* /UCTronics_OLED/
+COPY /ssd1306/* /UCTronics_OLED_F/
 
-COPY /ssd1306_dev/* /UCTronics_OLED_dev/
+COPY /ssd1306_dev/* /UCTronics_OLED_C/
 
 COPY run.sh /
 COPY start.sh /
@@ -35,4 +35,4 @@ WORKDIR /data
 RUN chmod a+x /run.sh
 RUN chmod a+x /start.sh
 
-#CMD [ "/run.sh" ]
+CMD [ "/start.sh" ]
