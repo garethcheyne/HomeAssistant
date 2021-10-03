@@ -40,4 +40,5 @@ if [ "$DISABLE_AUTO_START" = "false" ]; then
             exec run.sh
         fi
     fi
+    sleep 99999;
 fi
