@@ -187,7 +187,7 @@ void Write_IIC_Command(unsigned char IIC_Command)
 }
 
 /***********Display the BMP image  128X32  Starting point coordinates(x,y),The range of x 0~127   The range of y 0~4*****************/
-void OLED_DrawBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[][512], unsigned char symbol)
+void OLED_DrawBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[512])
 {
   unsigned int j = 0;
   unsigned char x, y;
@@ -201,12 +201,12 @@ void OLED_DrawBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned
     OLED_Set_Pos(x0, y);
     for (x = x0; x < x1; x++)
     {
-      OLED_WR_Byte(BMP[symbol][j++], OLED_DATA);
+      OLED_WR_Byte(BMP[j++], OLED_DATA);
     }
   }
 }
 
-void OLED_DrawPartBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[][512], unsigned char symbol)
+void OLED_DrawPartBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[512])
 {
   unsigned int j = x1 * y0;
   unsigned char x, y;
@@ -220,7 +220,7 @@ void OLED_DrawPartBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsi
     OLED_Set_Pos(x0, y);
     for (x = x0; x < x1; x++)
     {
-      OLED_WR_Byte(BMP[symbol][j++], OLED_DATA);
+      OLED_WR_Byte(BMP[j++], OLED_DATA);
     }
   }
 }
@@ -257,14 +257,14 @@ void OLED_Clear(void)
 /*
 *    LCD displays CPU temperature and other information
 */
-void LCD_DisplayTemperature(void)
+void LCD_DisplayTemperature(unsigned char temp_unit)
 {
   unsigned char symbol = 0;
   unsigned int temp = 0;
   FILE *fp;
   unsigned char buffer[80] = {0};
 
-  //Gets the temperature of the CPU
+  //Gets the temperature of the CPU in Celsius
   temp = Obaintemperature();
 
   //Gets the load on the CPU
@@ -279,7 +279,13 @@ void LCD_DisplayTemperature(void)
   strcpy(IPSource, GetIpAddress());
 
   OLED_Clear(); //Remove the interface
-  OLED_DrawBMP(0, 0, 128, 4, BMP, 0);
+  if (temp_unit == 'F') {
+    temp = (int) (((double) temp)* 9.0 / 5.0 + 32);
+    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_F);
+  }
+  else {
+    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_C);
+  }
 
   OLED_ShowString(0, 0, IPSource, 8); //Send the IP address to the lower machine
 
@@ -331,7 +337,7 @@ void LCD_DisPlayCpuMemory(void)
   if (sysinfo(&s_info) == 0) //Get memory information
   {
     OLED_ClearLint(2, 4);
-    OLED_DrawPartBMP(0, 2, 128, 4, BMP, 1);
+    OLED_DrawPartBMP(0, 2, 128, 4, BMP_CPU_RAM);
     FILE *fp = fopen("/proc/meminfo", "r");
     if (fp == NULL)
     {
@@ -379,7 +385,7 @@ void LCD_DisplaySdMemory(void)
   struct statfs diskInfo;
   statfs("/", &diskInfo);
   OLED_ClearLint(2, 4);
-  OLED_DrawPartBMP(0, 2, 128, 4, BMP, 2);
+  OLED_DrawPartBMP(0, 2, 128, 4, BMP_SD_MEM);
   unsigned long long blocksize = diskInfo.f_bsize;              // The number of bytes per block
   unsigned long long totalsize = blocksize * diskInfo.f_blocks; //Total number of bytes
   MemSize = (unsigned int)(totalsize >> 30);
@@ -418,12 +424,12 @@ void LCD_DisplaySdMemory(void)
 /*
 *According to the information
 */
-void LCD_Display(unsigned char symbol)
+void LCD_Display(unsigned char symbol, unsigned char temp_unit)
 {
   switch (symbol)
   {
   case 0:
-    LCD_DisplayTemperature();
+    LCD_DisplayTemperature(temp_unit);
     break;
   case 1:
     LCD_DisPlayCpuMemory();
