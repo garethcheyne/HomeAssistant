@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     while (1) {
         LCD_Display(symbol, temp_unit);
         sleep(3);
-        symbol = ++symbol % 3;
+        symbol = ++symbol % 4;
     }
     return 0;
 }

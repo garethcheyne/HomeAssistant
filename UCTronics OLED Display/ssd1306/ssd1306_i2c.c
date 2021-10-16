@@ -268,7 +268,7 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
   temp = Obaintemperature();
 
   //Gets the load on the CPU
-  fp = popen("grep -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'", "r");
+  fp = popen("top -bn1 | grep -m 1 Load | awk '{printf \"%.2f\", $(NF-2)}'", "r");
 
   // Read CPU Load
   fgets(buffer, sizeof(buffer), fp);
@@ -422,6 +422,15 @@ void LCD_DisplaySdMemory(void)
 }
 
 /*
+*    LCD displays Home Assistant Logo
+*/
+void LCD_DisplayHALogo()
+{
+  OLED_Clear(); //Remove the interface
+  OLED_DrawBMP(0, 0, 128, 4, BMP_HA_LOGO);
+}
+
+/*
 *According to the information
 */
 void LCD_Display(unsigned char symbol, unsigned char temp_unit)
@@ -436,6 +445,9 @@ void LCD_Display(unsigned char symbol, unsigned char temp_unit)
     break;
   case 2:
     LCD_DisplaySdMemory();
+    break;
+  case 3:
+    LCD_DisplayHALogo();
     break;
   default:
     break;
