@@ -426,11 +426,6 @@ void LCD_DisplaySdMemory(void)
 */
 void LCD_DisplayHALogo()
 {
-  unsigned char symbol = 0;
-  unsigned int temp = 0;
-  FILE *fp;
-  unsigned char buffer[80] = {0};
-
   OLED_Clear(); //Remove the interface
   OLED_DrawBMP(0, 0, 128, 4, BMP_HA_LOGO);
 }
