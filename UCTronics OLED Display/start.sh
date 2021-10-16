@@ -12,37 +12,29 @@ bashio::log.info "Disable Auto Start = ${DISABLE_AUTO_START}"
 
 if [ "$DISABLE_AUTO_START" = false ]; then
 
-    if [ "$TEMP_UNIT" = "C" ]; then
-        if ls /dev/i2c-1; then 
-            bashio::log.info "Setting Tempature Unit C"
-            bashio::log.info "Found i2c access!";
-            bashio::log.info "Loading C Script for UCTRONICS OLED...";
-            cd /UCTronics_OLED_C/
-            make clean
-            make 
-            bashio::log.info "UCTRONICS OLED Display should now be showing information?";
-            ./display
+
+    if ls /dev/i2c-1; then 
+        bashio::log.info "Found i2c access!";
+        bashio::log.info "Loading C script for UCTRONICS OLED...";
+
+        cd /UCTronics_OLED/
+        make clean
+        make 
+
+        bashio::log.info "Setting Tempature Unit $TEMP_UNIT"
+        bashio::log.info "UCTRONICS OLED Display should now be showing information?";
+        if [ "$TEMP_UNIT" = "C" ]; then
+            ./display C
         else
-            exec run.sh
-        
-        fi  
-    else
-        if ls /dev/i2c-1; then 
-            bashio::log.info "Setting Tempature Unit F"
-            bashio::log.info "Found i2c access!";
-            bashio::log.info "Loading C Script for UCTRONICS OLED...";
-            cd /UCTronics_OLED_F/
-            make clean
-            make 
-            bashio::log.info "UCTRONICS OLED Display should now be showing information?";
-            ./display
-        else
-            exec run.sh
+            ./display F
         fi
-    fi
+    else
+        bashio::log.info "Attempting to set up i2c access!";
+        exec run.sh        
+    fi 
 else
     bashio::log.info "No Auto Run"
-    cd /UCTronics_OLED_F/
+    cd /UCTronics_OLED/
     make clean
     make 
     sleep 99999;
