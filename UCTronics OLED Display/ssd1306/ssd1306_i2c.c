@@ -111,7 +111,7 @@ void OLED_ShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned
   }
 }
 
-unsigned int oled_pow(unsigned char m, unsigned char n)
+unsigned int OLED_Pow(unsigned char m, unsigned char n)
 {
   unsigned int result = 1;
   while (n--)
@@ -131,7 +131,7 @@ void OLED_ShowNum(unsigned char x, unsigned char y, unsigned int num, unsigned c
   unsigned char enshow = 0;
   for (t = 0; t < len; t++)
   {
-    temp = (num / oled_pow(10, len - t - 1)) % 10;
+    temp = (num / OLED_Pow(10, len - t - 1)) % 10;
     if (enshow == 0 && t < (len - 1))
     {
       if (temp == 0)
@@ -187,25 +187,6 @@ void Write_IIC_Command(unsigned char IIC_Command)
 }
 
 /***********Display the BMP image  128X32  Starting point coordinates(x,y),The range of x 0~127   The range of y 0~4*****************/
-void OLED_DrawBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[512])
-{
-  unsigned int j = 0;
-  unsigned char x, y;
-
-  if (y1 % 8 == 0)
-    y = y1 / 8;
-  else
-    y = y1 / 8 + 1;
-  for (y = y0; y < y1; y++)
-  {
-    OLED_Set_Pos(x0, y);
-    for (x = x0; x < x1; x++)
-    {
-      OLED_WR_Byte(BMP[j++], OLED_DATA);
-    }
-  }
-}
-
 void OLED_DrawPartBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[512])
 {
   unsigned int j = x1 * y0;
@@ -226,7 +207,7 @@ void OLED_DrawPartBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsi
 }
 
 /*
-*	Clear specified row
+*	Clear specified rows
 */
 void OLED_ClearLint(unsigned char x1, unsigned char x2)
 {
@@ -243,15 +224,7 @@ void OLED_ClearLint(unsigned char x1, unsigned char x2)
 
 void OLED_Clear(void)
 {
-  unsigned char i, n;
-  for (i = 0; i < 4; i++)
-  {
-    OLED_WR_Byte(0xb0 + i, OLED_CMD);
-    OLED_WR_Byte(0x00, OLED_CMD);
-    OLED_WR_Byte(0x10, OLED_CMD);
-    for (n = 0; n < 128; n++)
-      OLED_WR_Byte(0, OLED_DATA);
-  }
+  OLED_ClearLint(0, 4);
 }
 
 /*
@@ -265,7 +238,7 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
   unsigned char buffer[80] = {0};
 
   //Gets the temperature of the CPU in Celsius
-  temp = Obaintemperature();
+  temp = GetTemperature();
 
   //Gets the load on the CPU
   fp = popen("top -bn1 | grep -m 1 Load | awk '{printf \"%.2f\", $(NF-2)}'", "r");
@@ -281,10 +254,10 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
   OLED_Clear(); //Remove the interface
   if (temp_unit == 'F') {
     temp = (int) (((double) temp)* 9.0 / 5.0 + 32);
-    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_F);
+    OLED_DrawPartBMP(0, 0, 128, 4, BMP_TEMP_F);
   }
   else {
-    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_C);
+    OLED_DrawPartBMP(0, 0, 128, 4, BMP_TEMP_C);
   }
 
   OLED_ShowString(0, 0, IPSource, 8); //Send the IP address to the lower machine
@@ -308,7 +281,7 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
   OLED_ShowString(87, 3, buffer, 8);
 }
 
-unsigned char Obaintemperature(void)
+unsigned char GetTemperature(void)
 {
   FILE *fd;
   unsigned int temp;
@@ -427,7 +400,7 @@ void LCD_DisplaySdMemory(void)
 void LCD_DisplayHALogo()
 {
   OLED_Clear(); //Remove the interface
-  OLED_DrawBMP(0, 0, 128, 4, BMP_HA_LOGO);
+  OLED_DrawPartBMP(0, 0, 128, 4, BMP_HA_LOGO);
 }
 
 /*
