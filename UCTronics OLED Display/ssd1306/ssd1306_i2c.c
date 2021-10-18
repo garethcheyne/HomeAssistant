@@ -255,11 +255,11 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
   if (temp_unit == 'F')
   {
     temp = (int)(((double)temp) * 9.0 / 5.0 + 32);
-    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_F);
+    OLED_DrawPartBMP(0, 0, 128, 4, BMP_TEMP_F);
   }
   else
   {
-    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_C);
+    OLED_DrawPartBMP(0, 0, 128, 4, BMP_TEMP_C);
   }
 
   OLED_ShowString(0, 0, IPSource, 8); //Send the IP address to the lower machine
