@@ -1,5 +1,7 @@
 # Changelog
 
+## [2021.10.17.00] - Rework/Colab
+Thanks to [DC Walter](https://github.com/dcwalter) for adding HN Logo and other options.
 
 ## [2021.10.03.040] - Rework
 ### Added

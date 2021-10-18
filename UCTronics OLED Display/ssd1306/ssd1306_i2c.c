@@ -252,12 +252,14 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
   strcpy(IPSource, GetIpAddress());
 
   OLED_Clear(); //Remove the interface
-  if (temp_unit == 'F') {
-    temp = (int) (((double) temp)* 9.0 / 5.0 + 32);
-    OLED_DrawPartBMP(0, 0, 128, 4, BMP_TEMP_F);
+  if (temp_unit == 'F')
+  {
+    temp = (int)(((double)temp) * 9.0 / 5.0 + 32);
+    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_F);
   }
-  else {
-    OLED_DrawPartBMP(0, 0, 128, 4, BMP_TEMP_C);
+  else
+  {
+    OLED_DrawBMP(0, 0, 128, 4, BMP_TEMP_C);
   }
 
   OLED_ShowString(0, 0, IPSource, 8); //Send the IP address to the lower machine
@@ -278,7 +280,8 @@ void LCD_DisplayTemperature(unsigned char temp_unit)
     OLED_ShowChar(66, 3, temp + '0', 8);
   }
   //Display CPU load at end of line
-  OLED_ShowString(87, 3, buffer, 8);
+  //OLED_ShowString(87, 3, buffer, 8);
+  OLED_ShowString(90, 3, buffer, 8);
 }
 
 unsigned char GetTemperature(void)
