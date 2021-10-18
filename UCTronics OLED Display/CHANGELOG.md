@@ -1,4 +1,10 @@
 # Changelog
+## [2021.10.18.000] - Rework/Colab
+Thanks to [DC Walter](https://github.com/dcwalter)
+- Added BMPs for future modification and conversion using online utility
+- Removed some unnecessary duplicate code.
+- Fixed some spelling/style errors
+- Modified CPU, Mem, and Disk logos BMPs so that respective logos are all left-aligned.
 
 ## [2021.10.17.00] - Rework/Colab
 Thanks to [DC Walter](https://github.com/dcwalter) for adding HN Logo and other options.
