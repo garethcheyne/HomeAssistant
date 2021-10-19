@@ -3,7 +3,7 @@ FROM $BUILD_FROM
 ENV LANG C.UTF-8
 
 RUN set -xe \
-    && apk add --no-cache gcc build-base git i2c-tools nano linux-headers cmake pacman python3 py3-pip python3-dev python python-dev py-pip
+    && apk add --no-cache gcc build-base git i2c-tools nano linux-headers cmake pacman python3 py3-pip python3-dev
 
 
 # RUN set -xe \
