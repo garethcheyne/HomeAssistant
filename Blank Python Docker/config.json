@@ -1,6 +1,6 @@
 {
   "name": "Debian Base Image",
-  "version": "dev-01",
+  "version": "dev-02",
   "slug": "debian-base",
   "description": "Docker Debian base images used by Home Assistant Community Add-ons.",
   "url": "https://github.com/hassio-addons/addon-debian-base",
