@@ -20,7 +20,7 @@ RUN set -xe \
 RUN pip3 install adafruit-blinka
 RUN pip3 install adafruit-circuitpython-ssd1306
 RUN pip3 install requests
-RUN pip3 install RPi.GPIO
+#RUN pip3 install RPi.GPIO
 
 #sudo apt-get install python3-pip
 #sudo apt-get install python3-pil
