@@ -19,19 +19,23 @@ Special thanks to [DC Walter](https://github.com/dcwalter) for fixing the code t
 3. Check the "Log" and see if there are any error.
 4. Your OLED should be displaying.
 
-## Todo
-- Get Disable Auto Start to work, so that you can edit the the C code.
-- Set C Tempature Unit
-- Give option is use own python script, so user can chose what they want to dispaly.
-
 
 # New Python Project (In Development)
 This part of the project is still under active devlelopment, and yet will not run on HAOS.
 
-Some Teaser Screenshots.
-## Splash Screen
+## Some Teaser Screenshots.
+### Splash Screen
 ![Splash Screen](python/img/examples/splash.png?raw=true "Splash Screen")
+### CPU Stats
+![CPU Stats](python/img/examples/cpu.png?raw=true "CPU Stats")
+### RAM Stats
+![RAM Stats](python/img/examples/memory.png?raw=true "RAM Stats")
+### Storage Stats
+![Storage Stats](python/img/examples/storage.png?raw=true "Storage Stats")
+### Network Stats
+![Network Stats](python/img/examples/network.png?raw=true "Network Stats")
 
+## TODO
 - [x] Create base line project, and display is standars RasPi OS.
 - [x] Get Satistics (CPU, Network, RAM, Storage).
 - [x] Create HA Splash Screen
