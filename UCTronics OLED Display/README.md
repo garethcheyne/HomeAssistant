@@ -25,15 +25,15 @@ This part of the project is still under active development, and yet will not run
 
 ## Some Teaser Screenshots.
 ### Splash Screen
-![Splash Screen](python/img/examples/splash.png?raw=true "Splash Screen")
+![Splash Screen](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/memory.png?raw=true)
 ### CPU Stats
-![CPU Stats](python/img/examples/cpu.png?raw=true "CPU Stats")
+![CPU Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/cpu.png?raw=true)
 ### RAM Stats
-![RAM Stats](python/img/examples/memory.png?raw=true "RAM Stats")
+![RAM Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/memory.png?raw=true)
 ### Storage Stats
-![Storage Stats](python/img/examples/storage.png?raw=true "Storage Stats")
+![Storage Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/storage.png?raw=true)
 ### Network Stats
-![Network Stats](python/img/examples/network.png?raw=true "Network Stats")
+![Network Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/network.png?raw=true)
 
 ## TODO
 - [x] Create base line project, and display is standard RasPi OS.
