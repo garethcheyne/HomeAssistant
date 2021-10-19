@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 ## REF https://pillow.readthedocs.io/
+## REF Icons, 
 
 # This example is for use on (Linux) computers that are using CPython with
 # Adafruit Blinka to support CircuitPython libraries. CircuitPython does
@@ -10,12 +11,13 @@
 import math
 from os import stat
 import time
+import sys, getopt
 import subprocess
 import requests
 
 from board import SCL, SDA
 import busio
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import adafruit_ssd1306
 
 # Create the I2C interface.
@@ -43,11 +45,16 @@ draw = ImageDraw.Draw(image)
 
 # Load default font.
 # font = ImageFont.load_default()
-p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
-p_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
+p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 9)
+p_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 9)
+small = ImageFont.truetype("usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)
+smaller = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 7)
+
+
 img_network = Image.open(r"./img/ip-network.png") 
-img_mem = Image.open(r"./img/database.png") 
-img_disk = Image.open(r"./img/harddisk.png") 
+img_mem = Image.open(r"./img/database-outline.png") 
+#img_disk = Image.open(r"./img/harddisk.png") 
+img_disk = Image.open(r"./img/database-outline.png") 
 img_ha_logo = m = Image.open(r"./img/home-assistant-logo.png") 
 img_cpu_64 = Image.open(r"./img/cpu-64-bit.png") 
 
@@ -77,7 +84,9 @@ def show_storage(duration):
 
     draw.text((36, 0), "USED: " + disk[0] + ' GB \n', font=p, fill=255)
     draw.text((36, 11), "TOTAL: " + disk[1] + ' GB \n', font=p, fill=255)
-    draw.text((36, 21), "UTILIZED: " + disk[2] + ' \n', font=p, fill=255)     
+    draw.text((36, 21), "UTILIZED: " + disk[2] + ' \n', font=p, fill=255) 
+
+    image.save(r"./img/examples/storage.png")    
 
     disp.image(image)
     disp.show()
@@ -97,7 +106,9 @@ def show_memory(duration):
 
     draw.text((36, 0), "USED: " + mem[0] + ' GB \n', font=p, fill=255)
     draw.text((36, 11), "TOTAL: " + mem[1] + ' GB \n', font=p, fill=255)
-    draw.text((36, 21), "UTILIZED: " + mem[2] + ' \n', font=p, fill=255)     
+    draw.text((36, 21), "UTILIZED: " + mem[2] + ' \n', font=p, fill=255)  
+
+    image.save(r"./img/examples/memory.png")   
 
     disp.image(image)
     disp.show()
@@ -120,11 +131,13 @@ def show_cpu_temp(duration, unit):
     draw.rectangle((0,0,128,32), outline=0, fill=0)
 
     # Resize and merge icon to Canvas
-    icon = img_cpu_64.resize([30,30])  
-    image.paste(icon,(0,2))
+    icon = img_cpu_64.resize([32,32])  
+    image.paste(icon,(0,0))
 
     draw.text((36, 4), 'TEMP: ' + temp, font=p, fill=255)
-    draw.text((36, 20), 'LOAD: '+ stats['cpu'] + "% ", font=p, fill=255)    
+    draw.text((36, 18), 'LOAD: '+ stats['cpu'] + "% ", font=p, fill=255)  
+
+    image.save(r"./img/examples/cpu.png")
 
     disp.image(image)
     disp.show()
@@ -142,7 +155,9 @@ def show_network(duration):
     image.paste(icon,(0,2))
 
     draw.text((36, 4), stats['ip4'], font=p, fill=255)
-    draw.text((36, 20), stats['mac'].upper(), font=p, fill=255)    
+    draw.text((36, 20), stats['mac'].upper(), font=small, fill=255)    
+
+    image.save(r"./img/examples/network.png")
 
     disp.image(image)
     disp.show()
@@ -156,23 +171,37 @@ def get_ha_info():
     response = requests.get(url)   
     print(response.json()) 
 
+def get_text_center(text, font, center_point):
+    w, h = draw.textsize(text, font=font)
+
+    return (center_point -(w/2))
+
 
 def show_splash(duration):
 
     # Draw a padded black filled box with style.border width.
-    draw.rectangle((0, 0, width, height), outline=255, fill=255)
+    draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
     # Get HA Logo and Resize
-    logo = img_ha_logo.resize([32,32])  
+    logo = img_ha_logo.resize([32,32])
+    logo = ImageOps.invert(logo)  
     
     # Merge HA Logo with Canvas.
-    image.paste(logo,(-1,0))
+    image.paste(logo,(-2,0))
+
+    draw.line([(34, 16),(123,16)], fill=255, width=1)
+
+    ln1 = "Home Assistant"
+    ln1_x = get_text_center(ln1, p_bold, 78)
+    draw.text((ln1_x, 4), ln1, font=p_bold, fill=255)
 
     # Write Test, Eventually will get from HA API.
-    draw.text((30, 4), " Home Assistant ", font=p_bold, align='center', fill=0)
-    draw.text((30, 18), " OS 6.5 | 2021.10.6 ", font=p, align='center', fill=0)
+    ln2 = "OS 6.5 - 2021.10.6"
+    ln2_x = get_text_center(ln2, small, 78)
+    draw.text((ln2_x, 20), ln2, font=small, fill=255)
 
     # Display Image to OLED
+    image.save(r"./img/examples/splash.png")
     disp.image(image)
     disp.show() 
     time.sleep(duration)
@@ -195,4 +224,5 @@ def shell_cmd(cmd):
     return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 if __name__ == "__main__":
+    print(str(sys.argv))
     start()

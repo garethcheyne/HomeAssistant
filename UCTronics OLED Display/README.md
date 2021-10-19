@@ -23,3 +23,18 @@ Special thanks to [DC Walter](https://github.com/dcwalter) for fixing the code t
 - Get Disable Auto Start to work, so that you can edit the the C code.
 - Set C Tempature Unit
 - Give option is use own python script, so user can chose what they want to dispaly.
+
+
+# New Python Project (In Development)
+This part of the project is still under active devlelopment, and yet will not run on HAOS.
+
+Some Teaser Screenshots.
+## Splash Screen
+![Splash Screen](python/img/examples/splash.png?raw=true "Splash Screen")
+
+- [x] Create base line project, and display is standars RasPi OS.
+- [x] Get Satistics (CPU, Network, RAM, Storage).
+- [x] Create HA Splash Screen
+- [ ] Get RPi.GPIO to work in HA Docker
+- [ ] Pull further satistics from HA API.
+
