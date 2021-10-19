@@ -27,7 +27,7 @@ RUN pip3 install requests
 
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
-COPY /python/* /UCTronics_OLED_Python
+COPY /python/* /UCTronics_OLED_Python/
 
 COPY run.sh /
 COPY start.sh /
