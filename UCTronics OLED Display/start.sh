@@ -10,7 +10,7 @@ PYTHON="$(bashio::config 'Run Python Project')"
 bashio::log.info "Starting UCTronics OLED App..."
 bashio::log.info "Tempature Unit = ${TEMP_UNIT}"
 bashio::log.info "Disable Auto Start = ${DISABLE_AUTO_START}"
-bashio::log.info "Disable Auto Start = ${Python}"
+bashio::log.info "Disable Auto Start = ${PYTHON}"
 
 if [ "$DISABLE_AUTO_START" = false ]; then
 
