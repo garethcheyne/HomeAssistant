@@ -3,7 +3,7 @@ FROM $BUILD_FROM
 ENV LANG C.UTF-8
 
 RUN set -xe \
-    && apk add --no-cache gcc build-base git i2c-tools nano linux-headers cmake pacman python3 py3-pip python3-dev 
+    && apk add --no-cache gcc build-base git i2c-tools nano linux-headers cmake pacman python3 py3-pip python3-dev python, python-dev py-pip
 
 
 # RUN set -xe \
@@ -27,7 +27,7 @@ RUN pip3 install requests
 
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
-COPY /python* /UCTronics_OLED_Python
+COPY /python/* /UCTronics_OLED_Python
 
 COPY run.sh /
 COPY start.sh /
