@@ -38,7 +38,8 @@ This part of the project is still under active devlelopment, and yet will not ru
 ## TODO
 - [x] Create base line project, and display is standars RasPi OS.
 - [x] Get Satistics (CPU, Network, RAM, Storage).
-- [x] Create HA Splash Screen
-- [ ] Get RPi.GPIO to work in HA Docker
+- [x] Create HA Splash Screen.
+- [ ] Get RPi.GPIO to work in HA Docker.
 - [ ] Pull further satistics from HA API.
+- [ ] User Congif, allow users to set duration, and what statistics to show.
 
