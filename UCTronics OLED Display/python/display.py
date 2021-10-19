@@ -52,7 +52,7 @@ smaller = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 
 
 
 img_network = Image.open(r"./img/ip-network.png") 
-img_mem = Image.open(r"./img/database-outline.png") 
+img_mem = Image.open(r"./img/database.png") 
 #img_disk = Image.open(r"./img/harddisk.png") 
 img_disk = Image.open(r"./img/database-outline.png") 
 img_ha_logo = m = Image.open(r"./img/home-assistant-logo.png") 
@@ -101,7 +101,7 @@ def show_memory(duration):
     draw.rectangle((0,0,128,32), outline=0, fill=0)
 
     # Resize and merge icon to Canvas
-    icon = img_disk.resize([32,32])  
+    icon = img_mem.resize([32,32])  
     image.paste(icon,(0,0))
 
     draw.text((36, 0), "USED: " + mem[0] + ' GB \n', font=p, fill=255)

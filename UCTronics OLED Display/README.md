@@ -21,7 +21,7 @@ Special thanks to [DC Walter](https://github.com/dcwalter) for fixing the code t
 
 
 # New Python Project (In Development)
-This part of the project is still under active devlelopment, and yet will not run on HAOS.
+This part of the project is still under active development, and yet will not run on HAOS.
 
 ## Some Teaser Screenshots.
 ### Splash Screen
@@ -36,7 +36,7 @@ This part of the project is still under active devlelopment, and yet will not ru
 ![Network Stats](python/img/examples/network.png?raw=true "Network Stats")
 
 ## TODO
-- [x] Create base line project, and display is standars RasPi OS.
+- [x] Create base line project, and display is standard RasPi OS.
 - [x] Get Satistics (CPU, Network, RAM, Storage).
 - [x] Create HA Splash Screen.
 - [ ] Get RPi.GPIO to work in HA Docker.
