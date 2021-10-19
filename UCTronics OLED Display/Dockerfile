@@ -16,6 +16,8 @@ RUN set -xe \
 # sudo pip3 install adafruit-circuitpython-ssd1306
 # RUN curl -O https://bootstrap.pypa.io/get-pip.py
 # RUN python get-pip.py
+
+# RUN pip3 install adafruit-blinka
 # RUN pip3 install adafruit-circuitpython-ssd1306
 # RUN pip3 install RPi.GPIO
 
@@ -24,6 +26,7 @@ RUN set -xe \
 
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
+COPY /python* /UCTronics_OLED_Python/
 
 COPY run.sh /
 COPY start.sh /

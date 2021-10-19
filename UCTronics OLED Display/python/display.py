@@ -2,12 +2,16 @@
 # SPDX-FileCopyrightText: 2017 James DeVito for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
+## REF https://pillow.readthedocs.io/
+
 # This example is for use on (Linux) computers that are using CPython with
 # Adafruit Blinka to support CircuitPython libraries. CircuitPython does
 # not support PIL/pillow (python imaging library)!
 import math
+from os import stat
 import time
 import subprocess
+import requests
 
 from board import SCL, SDA
 import busio
@@ -27,10 +31,6 @@ disp.show()
 
 # Create blank image for drawing.
 # Make sure to create image with mode '1' for 1-bit color.
-oled = {
-    'width': disp.width, 
-    'height': disp.height
-    }
 
 width = disp.width
 height = disp.height
@@ -43,76 +43,156 @@ draw = ImageDraw.Draw(image)
 
 # Load default font.
 # font = ImageFont.load_default()
-p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)
-h1_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
-icons = ImageFont.truetype("/fonts/segoe", 20)
-md_icons = ImageFont.truetype("/fonts/materialIcons-regular.ttf", 20)
+p = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
+p_bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
+img_network = Image.open(r"./img/ip-network.png") 
+img_mem = Image.open(r"./img/database.png") 
+img_disk = Image.open(r"./img/harddisk.png") 
+img_ha_logo = m = Image.open(r"./img/home-assistant-logo.png") 
+img_cpu_64 = Image.open(r"./img/cpu-64-bit.png") 
 
-# Draw some shapes.
-# First define some constants to allow easy resizing of shapes.
-style = {
-    'boarder': 3,
-    'padding': -2
-}
 
-padding = -2
-border = 3
-top = padding
-bottom = height - padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 0
 
-def load():
-    logo()
-    info()
+def start():
+    while True:        
+        show_splash(5)
+        show_network(5)
+        show_storage(5)
+        show_memory(5)
+        show_cpu_temp(5, 'c')
 
-def logo():
+def show_storage(duration):
+    stats = get_status()
+
+    disk = stats['dsk'].split(',')
+
+    # Clear Canvas
+    draw.rectangle((0,0,128,32), outline=0, fill=0)
+
+    # Resize and merge icon to Canvas
+    icon = img_disk.resize([32,32])  
+    image.paste(icon,(0,0))
+
+    draw.text((36, 0), "USED: " + disk[0] + ' GB \n', font=p, fill=255)
+    draw.text((36, 11), "TOTAL: " + disk[1] + ' GB \n', font=p, fill=255)
+    draw.text((36, 21), "UTILIZED: " + disk[2] + ' \n', font=p, fill=255)     
+
+    disp.image(image)
+    disp.show()
+    time.sleep(duration)  
+
+def show_memory(duration):
+    stats = get_status()
+
+    mem = stats['mem'].split(',')
+
+    # Clear Canvas
+    draw.rectangle((0,0,128,32), outline=0, fill=0)
+
+    # Resize and merge icon to Canvas
+    icon = img_disk.resize([32,32])  
+    image.paste(icon,(0,0))
+
+    draw.text((36, 0), "USED: " + mem[0] + ' GB \n', font=p, fill=255)
+    draw.text((36, 11), "TOTAL: " + mem[1] + ' GB \n', font=p, fill=255)
+    draw.text((36, 21), "UTILIZED: " + mem[2] + ' \n', font=p, fill=255)     
+
+    disp.image(image)
+    disp.show()
+    time.sleep(duration) 
+
+
+def show_cpu_temp(duration, unit):
+
+    stats = get_status()
+
+    # Check temapture unit and convert if required.
+    temp = stats['temp']
+    if (unit == 'c'): 
+        temp = "%0.2f °C " % (temp)
+    else:
+        temp = "%0.2f °F " % (temp * 9.0 / 5.0 + 32)
+
+
+    # Clear Canvas
+    draw.rectangle((0,0,128,32), outline=0, fill=0)
+
+    # Resize and merge icon to Canvas
+    icon = img_cpu_64.resize([30,30])  
+    image.paste(icon,(0,2))
+
+    draw.text((36, 4), 'TEMP: ' + temp, font=p, fill=255)
+    draw.text((36, 20), 'LOAD: '+ stats['cpu'] + "% ", font=p, fill=255)    
+
+    disp.image(image)
+    disp.show()
+    time.sleep(duration)
+
+
+def show_network(duration):
+    stats = get_status()
+
+    # Clear Canvas
+    draw.rectangle((0,0,128,32), outline=0, fill=0)
+
+    # Resize and merge icon to Canvas
+    icon = img_network.resize([28,28])  
+    image.paste(icon,(0,2))
+
+    draw.text((36, 4), stats['ip4'], font=p, fill=255)
+    draw.text((36, 20), stats['mac'].upper(), font=p, fill=255)    
+
+    disp.image(image)
+    disp.show()
+    time.sleep(duration)
+
+
+def get_ha_info():
+
+    url = "http://192.168.0.210:8123/api/config"
+    headers = ""
+    response = requests.get(url)   
+    print(response.json()) 
+
+
+def show_splash(duration):
 
     # Draw a padded black filled box with style.border width.
-    draw.rectangle((0, 0, oled.width, oled.height), outline=255, fill=255)
-    draw.rectangle((style.border, style.border, oled.width - style.border, oled.height - style.border), outline=0, fill=0)
+    draw.rectangle((0, 0, width, height), outline=255, fill=255)
 
-    draw.text((0, 5), "Home Assitant", font=h1_bold, fill=255)
-    draw.text((5, 5), "q w e r", font=icons, fill=255)
-    draw.text((10, 5), "q w e r", font=md_icons, fill=255)
+    # Get HA Logo and Resize
+    logo = img_ha_logo.resize([32,32])  
+    
+    # Merge HA Logo with Canvas.
+    image.paste(logo,(-1,0))
+
+    # Write Test, Eventually will get from HA API.
+    draw.text((30, 4), " Home Assistant ", font=p_bold, align='center', fill=0)
+    draw.text((30, 18), " OS 6.5 | 2021.10.6 ", font=p, align='center', fill=0)
+
+    # Display Image to OLED
     disp.image(image)
     disp.show() 
-    time.sleep(10)
-    
-
-def info():
-    while True:
-        # Draw a black filled box to clear the image.
-        draw.rectangle((0, 0, width, height), outline=0, fill=0)
-
-        # Shell scripts for system monitoring from here:
-        # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
-
-        stats = get_status()
-
-        # Write four lines of text.
-        draw.text((x, top + 0), "IP: " + stats['ip4'], font=p, fill=255)
-        draw.text((x, top + 8), stats['cpu'], font=p, fill=255)
-        draw.text((x, top + 16), stats['mem'], font=p, fill=255)
-        draw.text((x, top + 25), stats['dsk'], font=p, fill=255)
-
-        # Display image.
-        disp.image(image)
-        disp.show()
-        time.sleep(0.1)
-
+    time.sleep(duration)
+  
 
 def get_status():
     stats = {
         'ip4': shell_cmd("hostname -I | cut -d' ' -f1"),
-        'cpu': shell_cmd("top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"),
-        'dsk': shell_cmd('df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''),
-        'mem': shell_cmd("free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'")
-        }            
+        'mac': shell_cmd("cat /sys/class/net/eth0/address"),
+        'cpu': shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'"),
+        'dsk': shell_cmd('df -h | awk \'$NF=="/"{printf "%d,%d,%s", $3,$2,$5}\''),
+        'mem': shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'"),
+        'temp': float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00 
+        }    
+
+    print(stats) 
     return stats
 
 def shell_cmd(cmd):
     return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 if __name__ == "__main__":
-    load()
+    start()
