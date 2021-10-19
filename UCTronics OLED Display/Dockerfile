@@ -15,7 +15,7 @@ RUN set -xe \
     python3 \
     python3-dev \
     py-rpigpio \
-    py-pip
+    py3-pip
 
 
 # RUN set -xe \
