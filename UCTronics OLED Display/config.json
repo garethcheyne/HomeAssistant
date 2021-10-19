@@ -1,6 +1,6 @@
 {
     "name": "UCTRONICS OLED Display",
-    "version": "2021.10.19.008",
+    "version": "2021.10.19.009",
     "slug": "uctronics_oled_display",
     "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
     "arch": [
@@ -8,19 +8,11 @@
         "armv7",
         "aarch64"
     ],
-    "system_packages": [
-        "gcc"
-      ],
-    "python_packages": [
-        "python-dev",
-        "RPi.GPIO",
-        "adafruit-blinka",
-        "adafruit-circuitpython-ssd1306",
-        "requests"
-    ],
+
     "log_level": "info",
     "startup": "services",
-    "auth_api": false,
+    "hassio_api": true,
+    "auth_api": true,
     "ingress": false,
     "app_armor": true,
     "host_network": true,
