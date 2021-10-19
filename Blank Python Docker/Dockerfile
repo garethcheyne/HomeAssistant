@@ -29,6 +29,10 @@ RUN \
         curl=7.74.0-1.3+b1 \
         jq=1.6-2.1 \
         tzdata=2021a-1 \
+        python3 \
+        python3-pip \
+        git\
+
     \
     && c_rehash \
     \
@@ -60,7 +64,7 @@ RUN \
     && rm -fr \
         /tmp/* \
         /var/{cache,log}/* \
-        /var/lib/apt/lists/*
+        /var/lib/apt/lists/* \
 
 # Entrypoint & CMD
 ENTRYPOINT [ "/init" ]

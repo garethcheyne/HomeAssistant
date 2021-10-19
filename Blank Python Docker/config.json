@@ -1,8 +1,39 @@
 {
-  "name": "Debian Base Image",
-  "version": "dev",
-  "slug": "debian-base",
-  "description": "Docker Debian base images used by Home Assistant Community Add-ons.",
-  "url": "https://github.com/hassio-addons/addon-debian-base",
-  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"]
+  "name": "UCTRONICS OLED Display(Debian)",
+  "version": "2021.10.20.010",
+  "slug": "debian_uctronics_oled_display",
+  "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
+  "arch": [
+      "armhf",
+      "armv7",
+      "aarch64"
+  ],
+  "log_level": "info",
+  "startup": "services",
+  "hassio_api": true,
+  "auth_api": true,
+  "ingress": false,
+  "app_armor": true,
+  "host_network": true,
+  "privileged": [
+      "SYS_ADMIN"
+  ],
+  "devices": [
+      "/dev/i2c-1"
+  ],
+  "gpio": true,
+  "stage": "experimental",
+  "full_access": true,
+  "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics%20OLED%20Display",
+  "boot": "auto",
+  "options": {
+      "Temperature_Unit": "C",
+      "Stop_Auto_Run": false,
+      "Run_Python_Project": false
+  },
+  "schema": {
+      "Temperature_Unit": "list(C|F)?",
+      "Stop_Auto_Run": "bool",
+      "Run_Python_Project": "bool"
+  }
 }
