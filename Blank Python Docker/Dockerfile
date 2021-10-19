@@ -1,136 +1,69 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:10.1.1
+ARG BUILD_FROM=debian:bullseye-20210927-slim
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
 # Environment variables
 ENV \
-    PATH="/usr/local/bin:$PATH" \
-    GPG_KEY="E3FF2839C048B25C084DEBE9B26995E310250568" \
-    PYTHON_VERSION="3.9.7" \
-    PYTHON_PIP_VERSION="21.2.3"
+    DEBIAN_FRONTEND="noninteractive" \
+    HOME="/root" \
+    LANG="C.UTF-8" \
+    PS1="$(whoami)@$(hostname):$(pwd)$ " \
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    S6_CMD_WAIT_FOR_SERVICES=1 \
+    TERM="xterm-256color"
+
+# Copy root filesystem
+COPY rootfs /
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install base system
-# hadolint ignore=DL3003,SC2155
+ARG BUILD_ARCH=amd64
 RUN \
-    apk add --no-cache --virtual .build-dependencies \
-        bzip2-dev=1.0.8-r1 \
-        coreutils=8.32-r2 \
-        dpkg-dev=1.20.9-r0 \
-        dpkg=1.20.9-r0 \
-        expat-dev=2.4.1-r0 \
-        findutils=4.8.0-r1 \
-        gcc=10.3.1_git20210424-r2 \
-        gdbm-dev=1.19-r0 \
-        gnupg=2.2.31-r0 \
-        libc-dev=0.7.2-r3 \
-        libffi-dev=3.3-r2 \
-        libnsl-dev=1.3.0-r0 \
-        libtirpc-dev=1.3.2-r0 \
-        linux-headers=5.10.41-r0 \
-        make=4.3-r0 \
-        ncurses-dev=6.2_p20210612-r0 \
-        openssl-dev=1.1.1l-r0 \
-        pax-utils=1.3.2-r0 \
-        readline-dev=8.1.0-r0 \
-        sqlite-dev=3.35.5-r0 \
-        tar=1.34-r0 \
-        tcl-dev=8.6.10-r1 \
-        tk-dev=8.6.10-r1 \
-        tk=8.6.10-r1 \
-        util-linux-dev=2.37-r0 \
-        xz-dev=5.2.5-r0 \
-        xz=5.2.5-r0 \
-        zlib-dev=1.2.11-r3 \
+    apt-get update \
     \
-    && curl -J -L -o /tmp/python.tar.xz \
-        "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-    && curl -J -L -o /tmp/python.tar.xz.asc \
-        "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+    && apt-get install -y --no-install-recommends \
+        bash=5.1-2+b3 \
+        ca-certificates=20210119 \
+        curl=7.74.0-1.3+b1 \
+        jq=1.6-2.1 \
+        tzdata=2021a-1 \
     \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && gpg \
-        --batch \
-        --keyserver hkps://keys.openpgp.org \
-        --recv-keys "$GPG_KEY" \
-    && gpg \
-        --batch \
-        --verify /tmp/python.tar.xz.asc /tmp/python.tar.xz \
-    && { command -v gpgconf > /dev/null && gpgconf --kill all || :; } \
+    && c_rehash \
     \
-    && mkdir -p /usr/src/python \
-    && tar -xJC /usr/src/python --strip-components=1 -f /tmp/python.tar.xz \
-    && cd /usr/src/python \
+    && S6_ARCH="${BUILD_ARCH}" \
+    && if [ "${BUILD_ARCH}" = "i386" ]; then S6_ARCH="x86"; fi \
+    && if [ "${BUILD_ARCH}" = "armv7" ]; then S6_ARCH="arm"; fi \
+    && if [ "${BUILD_ARCH}" = "armhf" ]; then S6_ARCH="armhf"; fi \
     \
-    && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-    && ./configure \
-        --build="$gnuArch" \
-        --enable-loadable-sqlite-extensions \
-        --enable-optimizations \
-        --enable-option-checking=fatal \
-        --enable-shared \
-        --with-system-expat \
-        --with-system-ffi \
-        --without-ensurepip \
+    && curl -L "https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-${S6_ARCH}.tar.gz" \
+        | tar zxvf - -C / \
     \
-    && make -j "$(nproc)" \
-        EXTRA_CFLAGS="-DTHREAD_STACK_SIZE=0x100000" \
-    && make install \
+    && mkdir -p /etc/fix-attrs.d \
+    && mkdir -p /etc/services.d \
     \
-    && find /usr/local \
-        -type f \
-        -executable \
-        -not \( -name '*tkinter*' \) \
-        -exec scanelf \
-        --needed \
-        --nobanner \
-        --format '%n#p' '{}' ';' \
-            | tr ',' '\n' \
-            | sort -u \
-            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-            | xargs -rt apk add --no-cache --virtual .python-rundeps \
+    && curl -J -L -o /tmp/bashio.tar.gz \
+        "https://github.com/hassio-addons/bashio/archive/v0.13.0.tar.gz" \
+    && mkdir /tmp/bashio \
+    && tar zxvf \
+        /tmp/bashio.tar.gz \
+        --strip 1 -C /tmp/bashio \
     \
-    && find /usr/local -depth \
-        \( \
-            \( -type d -a \( -name test -o -name tests \) \) \
-            -o \
-            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-        \) -exec rm -rf '{}' + \
+    && mv /tmp/bashio/lib /usr/lib/bashio \
+    && ln -s /usr/lib/bashio/bashio /usr/bin/bashio \
     \
-    && cd /usr/local/bin \
-    && ln -s idle3 idle \
-    && ln -s pydoc3 pydoc \
-    && ln -s python3 python \
-    && ln -s python3-config python-config \
+    && curl -L -s -o /usr/bin/tempio \
+        "https://github.com/home-assistant/tempio/releases/download/2021.05.0/tempio_${BUILD_ARCH}" \
+    && chmod a+x /usr/bin/tempio \
     \
-    && curl -J -L -o /tmp/get-pip.py \
-        'https://bootstrap.pypa.io/get-pip.py' \
-    \
-    && python /tmp/get-pip.py \
-        --disable-pip-version-check \
-        --no-cache-dir \
-        "pip==$PYTHON_PIP_VERSION" \
-    \
-    && find /usr/local -depth \
-        \( \
-            \( -type d -a \( -name test -o -name tests \) \) \
-            -o \
-            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-        \) -exec rm -rf '{}' +  \
-    \
-    && apk del --no-cache --purge .build-dependencies \
-    && rm -f -r \
-        /usr/src \
-        "$GNUPGHOME" \
+    && rm -fr \
         /tmp/* \
-    \
-    && python3 --version \
-    && pip3 --version
+        /var/{cache,log}/* \
+        /var/lib/apt/lists/*
 
 # Entrypoint & CMD
-ENTRYPOINT ["/init"]
+ENTRYPOINT [ "/init" ]
 
 # Build arugments
 ARG BUILD_DATE
@@ -140,20 +73,23 @@ ARG BUILD_REPOSITORY
 
 # Labels
 LABEL \
-    io.hass.name="Addon Python base for ${BUILD_ARCH}" \
-    io.hass.description="Home Assistant Community Add-on: ${BUILD_ARCH} Python base image" \
+    io.hass.name="Addon Debian base for ${BUILD_ARCH}" \
+    io.hass.description="Home Assistant Community Add-on: ${BUILD_ARCH} Debian base image" \
     io.hass.arch="${BUILD_ARCH}" \
     io.hass.type="base" \
     io.hass.version=${BUILD_VERSION} \
+    io.hass.base.version=${BUILD_VERSION} \
+    io.hass.base.name="debian" \
+    io.hass.base.image="hassioaddons/debian-base" \
     maintainer="Franck Nijhof <frenck@addons.community>" \
-    org.opencontainers.image.title="Addon Python base for ${BUILD_ARCH}" \
-    org.opencontainers.image.description="Home Assistant Community Add-on: ${BUILD_ARCH} Python base image" \
+    org.opencontainers.image.title="Addon Debian base for ${BUILD_ARCH}" \
+    org.opencontainers.image.description="Home Assistant Community Add-on: ${BUILD_ARCH} Debian base image" \
     org.opencontainers.image.vendor="Home Assistant Community Add-ons" \
     org.opencontainers.image.authors="Franck Nijhof <frenck@addons.community>" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.url="https://addons.community" \
     org.opencontainers.image.source="https://github.com/${BUILD_REPOSITORY}" \
-    org.opencontainers.image.documentation="https://github.com/${BUILD_REPOSITORY}/blob/master/README.md" \
+    org.opencontainers.image.documentation="https://github.com/${BUILD_REPOSITORY}/blob/main/README.md" \
     org.opencontainers.image.created=${BUILD_DATE} \
     org.opencontainers.image.revision=${BUILD_REF} \
     org.opencontainers.image.version=${BUILD_VERSION}
