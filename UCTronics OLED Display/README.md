@@ -25,7 +25,7 @@ This part of the project is still under active development, and yet will not run
 
 ## Some Teaser Screenshots.
 ### Splash Screen
-![Splash Screen](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/memory.png?raw=true)
+![Splash Screen](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/splash.png?raw=true)
 ### CPU Stats
 ![CPU Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics%20OLED%20Display/python/img/examples/cpu.png?raw=true)
 ### RAM Stats
