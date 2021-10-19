@@ -3,7 +3,7 @@ FROM $BUILD_FROM
 ENV LANG C.UTF-8
 
 RUN set -xe \
-    && apk add --no-cache build-base git i2c-tools nano linux-headers cmake pacman python3 python3-pip
+    && apk add --no-cache build-base git i2c-tools nano linux-headers cmake pacman python3
 
 
 # RUN set -xe \
@@ -21,12 +21,12 @@ RUN set -xe \
 # RUN pip3 install adafruit-circuitpython-ssd1306
 # RUN pip3 install RPi.GPIO
 
-# sudo apt-get install python3-pip
-# sudo apt-get install python3-pil
+#sudo apt-get install python3-pip
+#sudo apt-get install python3-pil
 
 # Copy over the C project
 COPY /ssd1306/* /UCTronics_OLED/
-COPY /python* /UCTronics_OLED_Python/
+COPY /python* /UCTronics_OLED_Python
 
 COPY run.sh /
 COPY start.sh /

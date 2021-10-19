@@ -36,8 +36,5 @@ if [ "$DISABLE_AUTO_START" = false ]; then
     fi 
 else
     bashio::log.info "No Auto Run"
-    cd /UCTronics_OLED/
-    make clean
-    make 
     sleep 99999;
 fi
