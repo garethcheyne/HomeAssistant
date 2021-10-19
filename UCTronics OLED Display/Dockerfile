@@ -3,7 +3,7 @@ FROM $BUILD_FROM
 ENV LANG C.UTF-8
 
 RUN set -xe \
-    && apk add --no-cache build-base git i2c-tools nano linux-headers cmake pacman python3 py-pip
+    && apk add --no-cache gcc build-base git i2c-tools nano linux-headers cmake pacman python3 python3-dev py-pip musl musk-dev linc-dev
 
 
 # RUN set -xe \
@@ -20,7 +20,7 @@ RUN set -xe \
 RUN pip3 install adafruit-blinka
 RUN pip3 install adafruit-circuitpython-ssd1306
 RUN pip3 install requests
-# RUN pip3 install RPi.GPIO
+RUN pip3 install RPi.GPIO
 
 #sudo apt-get install python3-pip
 #sudo apt-get install python3-pil
