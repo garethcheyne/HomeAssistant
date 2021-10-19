@@ -1,5 +1,5 @@
 {
-    "image": "homeassistant/{arch}-base-raspbian",
+    "image": "homeassistant/aarch64-base-raspbian",
     "shadow_repository": "ghcr.io/home-assistant",
     "build_from": {
         "armhf": "tianon/raspbian:"
