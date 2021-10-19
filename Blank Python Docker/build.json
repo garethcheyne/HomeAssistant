@@ -1,9 +1,16 @@
 {
+    "image": "homeassistant/{arch}-base-raspbian",
+    "shadow_repository": "ghcr.io/home-assistant",
     "build_from": {
-      "aarch64": "arm64v8/debian:bullseye-20210927-slim",
-      "amd64": "amd64/debian:bullseye-20210927-slim",
-      "armhf": "arm32v5/debian:bullseye-20210927-slim",
-      "armv7": "arm32v7/debian:bullseye-20210927-slim",
-      "i386": "i386/debian:bullseye-20210927-slim"
+        "armhf": "tianon/raspbian:"
+    },
+    "args": {
+        "BASHIO_VERSION": "0.13.1",
+        "TEMPIO_VERSION": "2021.05.0",
+        "S6_OVERLAY_VERSION": "2.1.0.2"
+    },
+    "labels": {
+        "io.hass.base.name": "raspbian",
+        "org.opencontainers.image.source": "https://github.com/home-assistant/docker-base"
     }
-  }
+}
