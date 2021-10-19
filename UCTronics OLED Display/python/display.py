@@ -71,9 +71,9 @@ def start():
         show_cpu_temp(5, 'c')
 
 def show_storage(duration):
-    stats = get_status()
+    storage =  shell_cmd('df -h | awk \'$NF=="/"{printf "%d,%d,%s", $3,$2,$5}\'')
 
-    disk = stats['dsk'].split(',')
+    storage = storage.split(',')
 
     # Clear Canvas
     draw.rectangle((0,0,128,32), outline=0, fill=0)
@@ -82,9 +82,9 @@ def show_storage(duration):
     icon = img_disk.resize([32,32])  
     image.paste(icon,(0,0))
 
-    draw.text((36, 0), "USED: " + disk[0] + ' GB \n', font=p, fill=255)
-    draw.text((36, 11), "TOTAL: " + disk[1] + ' GB \n', font=p, fill=255)
-    draw.text((36, 21), "UTILIZED: " + disk[2] + ' \n', font=p, fill=255) 
+    draw.text((36, 0), "USED: " + storage[0] + ' GB \n', font=p, fill=255)
+    draw.text((36, 11), "TOTAL: " + storage[1] + ' GB \n', font=p, fill=255)
+    draw.text((36, 21), "UTILIZED: " + storage[2] + ' \n', font=p, fill=255) 
 
     image.save(r"./img/examples/storage.png")    
 
@@ -93,9 +93,9 @@ def show_storage(duration):
     time.sleep(duration)  
 
 def show_memory(duration):
-    stats = get_status()
 
-    mem = stats['mem'].split(',')
+    mem =  shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
+    mem = mem.split(',')
 
     # Clear Canvas
     draw.rectangle((0,0,128,32), outline=0, fill=0)
@@ -117,10 +117,11 @@ def show_memory(duration):
 
 def show_cpu_temp(duration, unit):
 
-    stats = get_status()
+    cpu = shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'")
+    temp =  float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00
+    uptime = shell_cmd("uptime -p")
 
     # Check temapture unit and convert if required.
-    temp = stats['temp']
     if (unit == 'c'): 
         temp = "%0.2f °C " % (temp)
     else:
@@ -131,31 +132,34 @@ def show_cpu_temp(duration, unit):
     draw.rectangle((0,0,128,32), outline=0, fill=0)
 
     # Resize and merge icon to Canvas
-    icon = img_cpu_64.resize([32,32])  
-    image.paste(icon,(0,0))
+    icon = img_cpu_64.resize([26,26])  
+    image.paste(icon,(-2,3))
 
-    draw.text((36, 4), 'TEMP: ' + temp, font=p, fill=255)
-    draw.text((36, 18), 'LOAD: '+ stats['cpu'] + "% ", font=p, fill=255)  
+    draw.text((29, 0), 'TEMP: ' + temp, font=p, fill=255)
+    draw.text((29, 11), 'LOAD: '+ cpu + "% ", font=p, fill=255)  
+    draw.text((29, 21), uptime.upper(), font=small, fill=255)
 
     image.save(r"./img/examples/cpu.png")
 
-    disp.image(image)
     disp.show()
     time.sleep(duration)
 
 
 def show_network(duration):
-    stats = get_status()
+    hostname = shell_cmd("hostname")
+    ip4 = shell_cmd("hostname -I | cut -d' ' -f1")
+    mac = shell_cmd("cat /sys/class/net/eth0/address")
 
     # Clear Canvas
     draw.rectangle((0,0,128,32), outline=0, fill=0)
 
     # Resize and merge icon to Canvas
-    icon = img_network.resize([28,28])  
-    image.paste(icon,(0,2))
+    icon = img_network.resize([26,26])  
+    image.paste(icon,(-2,3))
 
-    draw.text((36, 4), stats['ip4'], font=p, fill=255)
-    draw.text((36, 20), stats['mac'].upper(), font=small, fill=255)    
+    draw.text((29, 0), "HOST " + hostname.upper(), font=small, fill=255)
+    draw.text((29, 11), "IP4 " + ip4, font=small, fill=255)    
+    draw.text((29, 21), "MAC " + mac.upper(), font=small, fill=255)    
 
     image.save(r"./img/examples/network.png")
 
