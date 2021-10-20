@@ -33,7 +33,7 @@ RUN \
         curl \
         ca-certificates \
         python3 \
-        python3-dev\
+        python3-dev \
         python3-pip \
         python3-rpi-gpio \
         libjpeg-dev \
