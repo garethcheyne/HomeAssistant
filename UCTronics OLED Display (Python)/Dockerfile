@@ -1,4 +1,5 @@
-ARG BUILD_FROM=tianon/raspbian:${VERSION}-slim
+ARG BUILD_FROM
+#tianon/raspbian:${VERSION}-slim
 
 FROM ${BUILD_FROM}
 
@@ -50,6 +51,9 @@ RUN \
     \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /usr/src/*
+
+
+COPY /python/* /UCTronics_OLED_Python/
 
 # S6-Overlay
 WORKDIR /

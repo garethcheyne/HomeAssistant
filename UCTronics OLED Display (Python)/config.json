@@ -1,7 +1,7 @@
 {
-  "name": "UCTRONICS OLED Display(Raspbian)",
+  "name": "UCTRONICS OLED Display(Python)",
   "version": "2021.10.20.016",
-  "slug": "debian_uctronics_oled_display",
+  "slug": "uctronics_oled_display_python",
   "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
   "arch": [
       "armhf",
