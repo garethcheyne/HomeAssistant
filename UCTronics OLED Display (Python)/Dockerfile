@@ -34,11 +34,11 @@ RUN \
         ca-certificates \
         python3 \
         python3-dev \
-        python3-pip \
-        python3-rpi-gpio \
-        libjpeg-dev \
-        libfreetype6-dev \
-        libopenjp2-7 \
+        # python3-pip \
+        # python3-rpi-gpio \
+        # libjpeg-dev \
+        # libfreetype6-dev \
+        # libopenjp2-7 \
     \
     && curl -L -f -s "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-armhf.tar.gz" \
         | tar zxvf - -C / \
