@@ -25,7 +25,7 @@ WORKDIR /usr/src
 
 RUN \
     set -x \
-    && apt-get update && apt-get install -y --no-install-recommends \
+    && apt-get update && apt-get install -y \
         gcc \
         bash \
         jq \
