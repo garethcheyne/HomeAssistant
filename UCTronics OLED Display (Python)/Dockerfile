@@ -66,5 +66,7 @@ RUN pip3 install pillow
 COPY /python* /UCTronics_OLED_Python/
 
 # S6-Overlay
-WORKDIR /
-ENTRYPOINT ["/init"]
+COPY start.sh /
+WORKDIR /data
+RUN chmod a+x /start.sh
+CMD [ "/start.sh" ]
