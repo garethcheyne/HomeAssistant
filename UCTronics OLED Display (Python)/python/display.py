@@ -95,7 +95,7 @@ def show_storage(duration):
 
 def show_memory(duration):
 
-    mem = shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
+    mem = "x,x,x" # shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
     print(mem)
     mem = mem.split(',')
 
@@ -121,7 +121,7 @@ def show_cpu_temp(duration, unit):
 
     cpu = shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'")
     temp =  float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00
-    uptime = shell_cmd("uptime -p")
+    uptime = "xxx" # shell_cmd("uptime -p")
 
     # Check temapture unit and convert if required.
     if (unit == 'c'): 
@@ -149,7 +149,7 @@ def show_cpu_temp(duration, unit):
 
 def show_network(duration):
     hostname = shell_cmd("hostname")
-    ip4 = shell_cmd("hostname -I | cut -d' ' -f1")
+    ip4 = "get host from host" #shell_cmd("hostname -I | cut -d' ' -f1")
     mac = shell_cmd("cat /sys/class/net/eth0/address")
 
     # Clear Canvas
