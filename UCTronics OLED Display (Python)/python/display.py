@@ -72,6 +72,7 @@ def start():
 
 def show_storage(duration):
     storage =  shell_cmd('df -h | awk \'$NF=="/"{printf "%d,%d,%s", $3,$2,$5}\'')
+    print(storage)
 
     storage = storage.split(',')
 
@@ -94,7 +95,8 @@ def show_storage(duration):
 
 def show_memory(duration):
 
-    mem =  shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
+    mem = shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
+    print(mem)
     mem = mem.split(',')
 
     # Clear Canvas

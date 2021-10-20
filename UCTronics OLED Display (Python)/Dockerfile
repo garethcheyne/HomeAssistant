@@ -27,7 +27,6 @@ RUN \
     set -x \
     && apt-get update && apt-get install -y --no-install-recommends \
         gcc \
-        nano \
         bash \
         jq \
         tzdata \
@@ -35,15 +34,12 @@ RUN \
         ca-certificates \
         python3 \
         python3-dev\
-        libpython3.9-dev \
         python3-pip \
-        RPi.GPIO \
+        python3-rpi-gpio \
         libjpeg-dev \
-        zlib1g-dev \
         libfreetype6-dev \
-        liblcms1-dev \
         libopenjp2-7 \
-        libtiff5 \
+
     \
     && curl -L -f -s "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-armhf.tar.gz" \
         | tar zxvf - -C / \
