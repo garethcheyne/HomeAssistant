@@ -60,8 +60,8 @@ RUN \
 
 # Install Pythong Libs for this Add-on
 RUN pip3 install requests
-RUN pip3 install adafruit-blinka
-RUN pip3 install adafruit-circuitpython-ssd1306
+#RUN pip3 install adafruit-blinka
+#RUN pip3 install adafruit-circuitpython-ssd1306
 #RUN pip3 install pillow
 
 COPY /python* /UCTronics_OLED_Python/
