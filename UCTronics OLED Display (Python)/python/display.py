@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: MIT
 
 ## REF https://pillow.readthedocs.io/
-## REF Icons, 
 
 # This example is for use on (Linux) computers that are using CPython with
 # Adafruit Blinka to support CircuitPython libraries. CircuitPython does
@@ -19,6 +18,18 @@ from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import adafruit_ssd1306
+
+## Global Variables
+# Default set, but can be overridden by config in addon setup.
+TEMP_UNIT = "C"
+SHOW_SPLASH = True
+SHOW_CPU = True
+SHOW_NETWORK = True
+SHOW_MEMORY = True,
+SHOW_STORAGE = True
+DURATION = 5
+
+
 
 # Create the I2C interface.
 i2c = busio.I2C(SCL, SDA)
@@ -53,27 +64,22 @@ smaller = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 
 
 img_network = Image.open(r"./img/ip-network.png") 
 img_mem = Image.open(r"./img/database.png") 
-#img_disk = Image.open(r"./img/harddisk.png") 
 img_disk = Image.open(r"./img/database-outline.png") 
 img_ha_logo = m = Image.open(r"./img/home-assistant-logo.png") 
 img_cpu_64 = Image.open(r"./img/cpu-64-bit.png") 
 
 
-# Move left to right keeping track of the current x position for drawing shapes.
-x = 0
-
 def start():
     while True:        
-        show_splash(5)
-        show_network(5)
-        show_storage(5)
-        show_memory(5)
-        show_cpu_temp(5, 'c')
+        if (SHOW_SPLASH) : show_splash()
+        if (SHOW_CPU) : show_cpu_temp()
+        if (SHOW_MEMORY) : show_memory()
+        if (SHOW_NETWORK) : show_network()
+        if (SHOW_STORAGE) : show_storage()
+        
 
-def show_storage(duration):
+def show_storage():
     storage =  shell_cmd('df -h | awk \'$NF=="/"{printf "%d,%d,%s", $3,$2,$5}\'')
-    print(storage)
-
     storage = storage.split(',')
 
     # Clear Canvas
@@ -83,20 +89,19 @@ def show_storage(duration):
     icon = img_disk.resize([32,32])  
     image.paste(icon,(0,0))
 
-    draw.text((36, 0), "USED: " + storage[0] + ' GB \n', font=p, fill=255)
-    draw.text((36, 11), "TOTAL: " + storage[1] + ' GB \n', font=p, fill=255)
-    draw.text((36, 21), "UTILIZED: " + storage[2] + ' \n', font=p, fill=255) 
+    draw.text((29, 0), "USED: " + storage[0] + ' GB \n', font=small, fill=255)
+    draw.text((29, 11), "TOTAL: " + storage[1] + ' GB \n', font=small, fill=255)
+    draw.text((29, 21), "UTILIZED: " + storage[2] + ' \n', font=small, fill=255) 
 
     image.save(r"./img/examples/storage.png")    
 
     disp.image(image)
     disp.show()
-    time.sleep(duration)  
+    time.sleep(DURATION)  
 
-def show_memory(duration):
+def show_memory():
 
-    mem = "x,x,x" # shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
-    print(mem)
+    mem = shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'")
     mem = mem.split(',')
 
     # Clear Canvas
@@ -106,27 +111,27 @@ def show_memory(duration):
     icon = img_mem.resize([32,32])  
     image.paste(icon,(0,0))
 
-    draw.text((36, 0), "USED: " + mem[0] + ' GB \n', font=p, fill=255)
-    draw.text((36, 11), "TOTAL: " + mem[1] + ' GB \n', font=p, fill=255)
-    draw.text((36, 21), "UTILIZED: " + mem[2] + ' \n', font=p, fill=255)  
+    draw.text((29, 0), "USED: " + mem[0] + ' GB \n', font=small, fill=255)
+    draw.text((29, 11), "TOTAL: " + mem[1] + ' GB \n', font=small, fill=255)
+    draw.text((29, 21), "UTILIZED: " + mem[2] + ' \n', font=small, fill=255)  
 
-    image.save(r"./img/examples/memory.png")   
+    #image.save(r"./img/examples/memory.png")   
 
     disp.image(image)
     disp.show()
-    time.sleep(duration) 
+    time.sleep(DURATION) 
 
 
-def show_cpu_temp(duration, unit):
+def show_cpu_temp():
 
-    host_info = hassos_get_info('host')
+    host_info = hassos_get_info('host/info')
 
     cpu = shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'")
     temp =  float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00
-    uptime = str(host_info['data']['boot_timestamp'])
+    uptime = shell_cmd("uptime | grep -ohe 'up .*' | sed 's/,//g' | awk '{ print $2" "$3 }'")
 
     # Check temapture unit and convert if required.
-    if (unit == 'c'): 
+    if (TEMP_UNIT == 'C'): 
         temp = "%0.2f °C " % (temp)
     else:
         temp = "%0.2f °F " % (temp * 9.0 / 5.0 + 32)
@@ -139,22 +144,23 @@ def show_cpu_temp(duration, unit):
     icon = img_cpu_64.resize([26,26])  
     image.paste(icon,(-2,3))
 
-    draw.text((29, 0), 'TEMP: ' + temp, font=p, fill=255)
-    draw.text((29, 11), 'LOAD: '+ cpu + "% ", font=p, fill=255)  
+    draw.text((29, 0), 'TEMP: ' + temp, font=small, fill=255)
+    draw.text((29, 11), 'LOAD: '+ cpu + "% ", font=small, fill=255)  
     draw.text((29, 21), uptime.upper(), font=small, fill=255)
 
-    image.save(r"./img/examples/cpu.png")
-
+    #image.save(r"./img/examples/cpu.png")
+    
+    disp.image(image)
     disp.show()
-    time.sleep(duration)
+    time.sleep(DURATION)
 
 
-def show_network(duration):
-    host_info = hassos_get_info('host')
+def show_network():
+    host_info = hassos_get_info('host/info')
     hostname = host_info['data']['hostname'].upper()
 
     network_info = hassos_get_info('network')
-    ipv4= network_info['data']['interfaces'][0]['ipv4']['address']
+    ipv4 = network_info['data']['interfaces'][0]['ipv4']['address'][0].split("/")[0]
 
     mac = shell_cmd("cat /sys/class/net/eth0/address")
 
@@ -169,11 +175,11 @@ def show_network(duration):
     draw.text((29, 11), "IP4 " + ipv4, font=small, fill=255)    
     draw.text((29, 21), "MAC " + mac.upper(), font=small, fill=255)    
 
-    image.save(r"./img/examples/network.png")
+    #image.save(r"./img/examples/network.png")
 
     disp.image(image)
     disp.show()
-    time.sleep(duration)
+    time.sleep(DURATION)
 
 def get_text_center(text, font, center_point):
     w, h = draw.textsize(text, font=font)
@@ -181,15 +187,19 @@ def get_text_center(text, font, center_point):
     return (center_point -(w/2))
 
 
-def show_splash(duration):
+def show_splash():
 
-    os_info = hassos_get_info('os')    
+    os_info = hassos_get_info('os/info')    
     os_version = os_info['data']['version']
     os_upgrade = os_info['data']['update_available']  
+    if (os_upgrade == True):
+        os_version =  "*" + os_version 
 
-    core_info = hassos_get_info('core')
+    core_info = hassos_get_info('core/info')
     core_version = core_info['data']['version']  
-    core_upgrade = os_info['data']['update_available']   
+    core_upgrade = os_info['data']['update_available']
+    if (core_upgrade == True):
+        core_version =  "*" + core_version
 
 
     # Draw a padded black filled box with style.border width.
@@ -215,33 +225,32 @@ def show_splash(duration):
 
 
     # Display Image to OLED
-    image.save(r"./img/examples/splash.png")
+    #image.save(r"./img/examples/splash.png")
     disp.image(image)
     disp.show() 
-    time.sleep(duration)
+    time.sleep(DURATION)
   
 
-def get_status():
-    stats = {
-        'ip4': shell_cmd("hostname -I | cut -d' ' -f1"),
-        'mac': shell_cmd("cat /sys/class/net/eth0/address"),
-        'cpu': shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'"),
-        'dsk': shell_cmd('df -h | awk \'$NF=="/"{printf "%d,%d,%s", $3,$2,$5}\''),
-        'mem': shell_cmd("free -m | awk 'NR==2{printf \"%.1f,%.1f,%.0f%%\", $3/1000,$2/1000,$3*100/$2 }'"),
-        'temp': float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00 
-        }    
-
-    print(stats) 
-    return stats
-
 def hassos_get_info(type):
-    info = shell_cmd('curl -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/'+ type +'/info')
+    info = shell_cmd('curl -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/' + type)
     return json.loads(info)
 
 
 def shell_cmd(cmd):
     return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
+def get_options():
+    f = open("/data/options.json", "r")
+    options = json.loads(f.read())
+    TEMP_UNIT = options['Temperature_Unit']
+    SHOW_SPLASH = options['Show_Splash_Screen']
+    SHOW_CPU = options['Show_CPU_Info']
+    SHOW_MEMORY =options['Show_Memory_Info']
+    SHOW_STORAGE = options['Show_Storage_Info']
+    SHOW_NETWORK = options['Show_Network_Info']
+    DURATION =  options['Slide_Duration']
+
 if __name__ == "__main__":
-    print(str(sys.argv))
+    get_options()
     start()
+
