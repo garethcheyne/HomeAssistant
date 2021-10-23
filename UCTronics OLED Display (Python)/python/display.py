@@ -25,7 +25,7 @@ TEMP_UNIT = "C"
 SHOW_SPLASH = True
 SHOW_CPU = True
 SHOW_NETWORK = True
-SHOW_MEMORY = True,
+SHOW_MEMORY = True
 SHOW_STORAGE = True
 DURATION = 5
 
@@ -242,6 +242,7 @@ def shell_cmd(cmd):
 def get_options():
     f = open("/data/options.json", "r")
     options = json.loads(f.read())
+    global TEMP_UNIT, SHOW_SPLASH, SHOW_CPU, SHOW_MEMORY, SHOW_STORAGE, SHOW_NETWORK, DURATION
     TEMP_UNIT = options['Temperature_Unit']
     SHOW_SPLASH = options['Show_Splash_Screen']
     SHOW_CPU = options['Show_CPU_Info']
