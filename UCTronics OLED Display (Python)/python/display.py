@@ -185,11 +185,11 @@ def show_splash(duration):
 
     os_info = hassos_get_info('os')    
     os_version = os_info['data']['version']
-    os_upgrade = os_info['data']['upgrade_available']  
+    os_upgrade = os_info['data']['update_available']  
 
     core_info = hassos_get_info('core')
     core_version = core_info['data']['version']  
-    core_upgrade = os_info['data']['upgrade_available']   
+    core_upgrade = os_info['data']['update_available']   
 
 
     # Draw a padded black filled box with style.border width.
