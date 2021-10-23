@@ -86,12 +86,12 @@ def show_storage():
     draw.rectangle((0,0,128,32), outline=0, fill=0)
 
     # Resize and merge icon to Canvas
-    icon = img_disk.resize([32,32])  
-    image.paste(icon,(0,0))
+    icon = img_disk.resize([26,26])  
+    image.paste(icon,(-2,3))
 
     draw.text((29, 0), "USED: " + storage[0] + ' GB \n', font=small, fill=255)
     draw.text((29, 11), "TOTAL: " + storage[1] + ' GB \n', font=small, fill=255)
-    draw.text((29, 21), "UTILIZED: " + storage[2] + ' \n', font=small, fill=255) 
+    draw.text((29, 21), "UTILISED: " + storage[2] + ' \n', font=small, fill=255) 
 
     #image.save(r"./img/examples/storage.png")    
 
@@ -113,7 +113,7 @@ def show_memory():
 
     draw.text((29, 0), "USED: " + mem[0] + ' GB \n', font=small, fill=255)
     draw.text((29, 11), "TOTAL: " + mem[1] + ' GB \n', font=small, fill=255)
-    draw.text((29, 21), "UTILIZED: " + mem[2] + ' \n', font=small, fill=255)  
+    draw.text((29, 21), "UTILISED: " + mem[2] + ' \n', font=small, fill=255)  
 
     #image.save(r"./img/examples/memory.png")   
 
