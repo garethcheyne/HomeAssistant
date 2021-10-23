@@ -2,6 +2,8 @@
 
 Enables the the OLED display for UCTRONICS Pi 4 Rack Module.
 
+### NB, This addon will take some time it initially load as it has to build some python libraries. 
+
 This addon will utilise code from Adam Outler, [GitHub adamoutler](https://github.com/adamoutler/HassOSConfigurator/tree/main/Pi4EnableI2C) to first enable the I2C interface, you will need to reboot twice as per his documentation. After I2C is enabled then the display will finally show.
 
 Special thanks to [DC Walter](https://github.com/dcwalter) for his assistance on this project.
