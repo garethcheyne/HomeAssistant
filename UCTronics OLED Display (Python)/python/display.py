@@ -33,9 +33,9 @@ DURATION = 5
 
 # Create the I2C interface.
 i2c = busio.I2C(SCL, SDA)
+
 # Create the SSD1306 OLED class.
-# The first two parameters are the pixel width and pixel height.  Change these
-# to the right size for your display!
+# The first two parameters are the pixel width and pixel height.  Change these to the right size for your display!
 disp = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
 
 # Clear display.
@@ -124,7 +124,7 @@ def show_memory():
 
 def show_cpu_temp():
 
-    host_info = hassos_get_info('host/info')
+    #host_info = hassos_get_info('host/info')
 
     cpu = shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'")
     temp =  float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00
@@ -229,7 +229,7 @@ def show_splash():
     disp.image(image)
     disp.show() 
     time.sleep(DURATION)
-  
+
 
 def hassos_get_info(type):
     info = shell_cmd('curl -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/' + type)
@@ -238,6 +238,7 @@ def hassos_get_info(type):
 
 def shell_cmd(cmd):
     return subprocess.check_output(cmd, shell=True).decode("utf-8")
+
 
 def get_options():
     f = open("/data/options.json", "r")
@@ -251,6 +252,9 @@ def get_options():
     SHOW_NETWORK = options['Show_Network_Info']
     DURATION =  options['Slide_Duration']
 
+def clear_display():
+    disp.fill(0)
+    disp.show()
 
 if __name__ == "__main__":
     get_options()
