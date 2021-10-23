@@ -1,6 +1,6 @@
 {
     "name": "UCTRONICS OLED Display(Python)",
-    "version": "2021.10.23.005",
+    "version": "2021.10.23.010",
     "slug": "uctronics_oled_display_python",
     "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
     "arch": [
