@@ -69,6 +69,8 @@ COPY /python* /UCTronics_OLED_Python/
 
 # S6-Overlay
 COPY start.sh /
+COPY run.sh /
 WORKDIR /data
 RUN chmod a+x /start.sh
+RUN chmod a+x /run.sh
 CMD [ "/start.sh" ]

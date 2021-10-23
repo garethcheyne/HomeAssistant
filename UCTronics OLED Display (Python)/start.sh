@@ -3,14 +3,23 @@ set -e
 
 CONFIG_PATH=/data/options.json
 
-TEMP_UNIT="$(bashio::config 'Temperature_Unit')"
 DISABLE_AUTO_START="$(bashio::config 'Stop_Auto_Run')"
 bashio::log.info "Starting UCTronics OLED App..."
 bashio::log.info "Disable Auto Start = ${DISABLE_AUTO_START}"
 
+
 if [ "$DISABLE_AUTO_START" = false ]; then
-    cd /UCTronics_OLED_Python/
-    python3 display.py
+
+    if ls /dev/i2c-1; then 
+        bashio::log.info "Got i2c access! WoHOo!";
+        bashio::log.info "Display Info to OLED"
+        cd /UCTronics_OLED_Python/
+        python3 display.py
+    else
+        bashio::log.info "Attempting to set up i2c access!";
+        exec run.sh        
+    fi 
+
 
 else
     bashio::log.info "No Auto Run"

@@ -6,7 +6,7 @@ This addon will utilise code from Adam Outler, [GitHub adamoutler](https://githu
 
 Special thanks to [DC Walter](https://github.com/dcwalter) for his assistance on this project.
 
-This addon includes a Splash screen that will show you the current cussing version of the Core OS, and HA, and will be presented with an astricx if either require an upgrade.
+This addon includes a splash screen that will show you the current  version of the Core OS, and HA, and will be presented with an astricx if either require an upgrade. You are also able to set the duration of the slide rotation, and what slides you wish to present.
 
 
 ## First Step
@@ -17,7 +17,7 @@ This addon includes a Splash screen that will show you the current cussing versi
 ## Second Step.
 1. Enable "Protection mode"
 2. Start the addon
-3. Check the "Log" and see if there are any error.
+3. Check the "Log" and see if there are any errors.
 4. Your OLED should be displaying.
 
 ## Some Teaser Screenshots.

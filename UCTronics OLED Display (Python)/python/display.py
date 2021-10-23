@@ -93,7 +93,7 @@ def show_storage():
     draw.text((29, 11), "TOTAL: " + storage[1] + ' GB \n', font=small, fill=255)
     draw.text((29, 21), "UTILIZED: " + storage[2] + ' \n', font=small, fill=255) 
 
-    image.save(r"./img/examples/storage.png")    
+    #image.save(r"./img/examples/storage.png")    
 
     disp.image(image)
     disp.show()
@@ -108,8 +108,8 @@ def show_memory():
     draw.rectangle((0,0,128,32), outline=0, fill=0)
 
     # Resize and merge icon to Canvas
-    icon = img_mem.resize([32,32])  
-    image.paste(icon,(0,0))
+    icon = img_mem.resize([26,26])  
+    image.paste(icon,(-2,3))
 
     draw.text((29, 0), "USED: " + mem[0] + ' GB \n', font=small, fill=255)
     draw.text((29, 11), "TOTAL: " + mem[1] + ' GB \n', font=small, fill=255)
@@ -159,7 +159,7 @@ def show_network():
     host_info = hassos_get_info('host/info')
     hostname = host_info['data']['hostname'].upper()
 
-    network_info = hassos_get_info('network')
+    network_info = hassos_get_info('network/info')
     ipv4 = network_info['data']['interfaces'][0]['ipv4']['address'][0].split("/")[0]
 
     mac = shell_cmd("cat /sys/class/net/eth0/address")
@@ -206,11 +206,11 @@ def show_splash():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
     # Get HA Logo and Resize
-    logo = img_ha_logo.resize([32,32])
+    logo = img_ha_logo.resize([26,26])
     logo = ImageOps.invert(logo)  
     
     # Merge HA Logo with Canvas.
-    image.paste(logo,(-2,0))
+    image.paste(logo,(-2,3))
 
     draw.line([(34, 16),(123,16)], fill=255, width=1)
 
