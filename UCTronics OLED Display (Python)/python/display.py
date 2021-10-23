@@ -13,7 +13,6 @@ import time
 import sys, getopt
 import subprocess
 import json
-from gpiozero import OutputDevice
 
 from board import SCL, SDA
 import busio
@@ -252,9 +251,6 @@ def get_options():
     SHOW_NETWORK = options['Show_Network_Info']
     DURATION =  options['Slide_Duration']
 
-def fan_control():
-    fan = OutputDevice(2)
-    print(fan.value)
 
 if __name__ == "__main__":
     get_options()
