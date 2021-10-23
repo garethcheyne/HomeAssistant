@@ -13,7 +13,7 @@ from os import stat
 import time
 import sys, getopt
 import subprocess
-import requests
+import json
 
 from board import SCL, SDA
 import busio
@@ -119,9 +119,11 @@ def show_memory(duration):
 
 def show_cpu_temp(duration, unit):
 
+    host_info = hassos_get_info('host')
+
     cpu = shell_cmd("top -bn1 | grep load | awk '{printf \"%.2f\", $(NF-2)}'")
     temp =  float(shell_cmd("cat /sys/class/thermal/thermal_zone0/temp")) / 1000.00
-    uptime = "xxx" # shell_cmd("uptime -p")
+    uptime = str(host_info['data']['boot_timestamp'])
 
     # Check temapture unit and convert if required.
     if (unit == 'c'): 
@@ -148,8 +150,12 @@ def show_cpu_temp(duration, unit):
 
 
 def show_network(duration):
-    hostname = shell_cmd("hostname")
-    ip4 = "get host from host" #shell_cmd("hostname -I | cut -d' ' -f1")
+    host_info = hassos_get_info('host')
+    hostname = host_info['data']['hostname'].upper()
+
+    network_info = hassos_get_info('network')
+    ipv4= network_info['data']['interfaces'][0]['ipv4']['address']
+
     mac = shell_cmd("cat /sys/class/net/eth0/address")
 
     # Clear Canvas
@@ -159,8 +165,8 @@ def show_network(duration):
     icon = img_network.resize([26,26])  
     image.paste(icon,(-2,3))
 
-    draw.text((29, 0), "HOST " + hostname.upper(), font=small, fill=255)
-    draw.text((29, 11), "IP4 " + ip4, font=small, fill=255)    
+    draw.text((29, 0), "HOST " + hostname, font=small, fill=255)
+    draw.text((29, 11), "IP4 " + ipv4, font=small, fill=255)    
     draw.text((29, 21), "MAC " + mac.upper(), font=small, fill=255)    
 
     image.save(r"./img/examples/network.png")
@@ -169,14 +175,6 @@ def show_network(duration):
     disp.show()
     time.sleep(duration)
 
-
-def get_ha_info():
-
-    url = "http://192.168.0.210:8123/api/config"
-    headers = ""
-    response = requests.get(url)   
-    print(response.json()) 
-
 def get_text_center(text, font, center_point):
     w, h = draw.textsize(text, font=font)
 
@@ -184,6 +182,15 @@ def get_text_center(text, font, center_point):
 
 
 def show_splash(duration):
+
+    os_info = hassos_get_info('os')    
+    os_version = os_info['data']['version']
+    os_upgrade = os_info['data']['upgrade_available']  
+
+    core_info = hassos_get_info('core')
+    core_version = core_info['data']['version']  
+    core_upgrade = os_info['data']['upgrade_available']   
+
 
     # Draw a padded black filled box with style.border width.
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
@@ -202,9 +209,10 @@ def show_splash(duration):
     draw.text((ln1_x, 4), ln1, font=p_bold, fill=255)
 
     # Write Test, Eventually will get from HA API.
-    ln2 = "OS 6.5 - 2021.10.6"
+    ln2 = 'OS '+ os_version + ' - ' + core_version
     ln2_x = get_text_center(ln2, small, 78)
     draw.text((ln2_x, 20), ln2, font=small, fill=255)
+
 
     # Display Image to OLED
     image.save(r"./img/examples/splash.png")
@@ -225,6 +233,11 @@ def get_status():
 
     print(stats) 
     return stats
+
+def hassos_get_info(type):
+    info = shell_cmd('curl -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/'+ type +'/info')
+    return json.loads(info)
+
 
 def shell_cmd(cmd):
     return subprocess.check_output(cmd, shell=True).decode("utf-8")

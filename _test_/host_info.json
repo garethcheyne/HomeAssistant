@@ -1,0 +1,33 @@
+{
+    "result": "ok",
+    "data": {
+        "agent_version": "1.2.1",
+        "chassis": "embedded",
+        "cpe": "cpe:2.3:o:home-assistant:haos:6.5:*:production:*:*:*:rpi4-64:*",
+        "deployment": "production",
+        "disk_free": 184.5,
+        "disk_total": 219.4,
+        "disk_used": 25.9,
+        "disk_life_time": null,
+        "features": [
+            "reboot",
+            "shutdown",
+            "services",
+            "network",
+            "hostname",
+            "timedate",
+            "os_agent",
+            "haos"
+        ],
+        "hostname": "homeassistant",
+        "kernel": "5.10.17-v8",
+        "operating_system": "Home Assistant OS 6.5",
+        "timezone": "Etc/UTC",
+        "dt_utc": "2021-10-22T23:13:27.300535+00:00",
+        "dt_synchronized": true,
+        "use_ntp": true,
+        "use_rtc": false,
+        "startup_time": 2.247293,
+        "boot_timestamp": 1634525482073616
+    }
+}
