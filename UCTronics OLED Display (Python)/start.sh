@@ -12,4 +12,7 @@ if [ "$DISABLE_AUTO_START" = false ]; then
     cd /UCTronics_OLED_Python/
     python3 display.py
 
+else
+    bashio::log.info "No Auto Run"
+    sleep 99999;
 fi
