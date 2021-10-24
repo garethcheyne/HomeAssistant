@@ -1,8 +1,8 @@
 {
     "name": "UCTRONICS OLED Display(C)",
-    "version": "2021.10.20.011",
+    "version": "2021.10.21",
     "slug": "uctronics_oled_display",
-    "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
+    "description": "DEPRECATED - This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
     "arch": [
         "armhf",
         "armv7",
@@ -24,7 +24,7 @@
     "gpio": true,
     "stage": "experimental",
     "full_access": true,
-    "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics%20OLED%20Display",
+    "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics_OLED_Display_C",
     "boot": "auto",
     "options": {
         "Temperature_Unit": "C",
