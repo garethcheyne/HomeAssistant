@@ -1,6 +1,6 @@
 # UCTRONICS OLED Display
 
-## Project not Depricated, Replaced with Python Version.
+## Project now Depricated, Replaced with Python Version.
 
 ### NB This is my first HomeAssistant Add-on so use at own risk
 
