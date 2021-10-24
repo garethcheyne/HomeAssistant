@@ -66,7 +66,7 @@ RUN pip3 install adafruit-blinka
 RUN pip3 install adafruit-circuitpython-ssd1306
 RUN pip3 install pillow
 
-COPY /python* /UCTronics_OLED_Python/
+COPY /python* /UCTronics_OLED/
 
 # S6-Overlay
 COPY start.sh /

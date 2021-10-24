@@ -14,7 +14,7 @@ if [ "$DISABLE_AUTO_START" = false ]; then
     if ls /dev/i2c-1; then 
         bashio::log.info "Got i2c access! WoHOo!";
         bashio::log.info "Display Info to OLED"
-        cd /UCTronics_OLED_Python/
+        cd /UCTronics_OLED/
         python3 display.py
     else
         bashio::log.info "Attempting to set up i2c access!";
