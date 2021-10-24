@@ -32,4 +32,4 @@ This addon includes a splash screen that will show you the current  version of t
 ### Storage Stats
 ![Storage Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics_OLED_Display_Python/python/img/examples/storage.png?raw=true)
 ### Network Stats
-![Network Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UUCTronics_OLED_Display_Python/python/img/examples/network.png?raw=true)
+![Network Stats](https://github.com/garethcheyne/HomeAssistant/raw/main/UCTronics_OLED_Display_Python/python/img/examples/network.png?raw=true)
