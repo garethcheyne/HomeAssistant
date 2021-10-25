@@ -193,13 +193,13 @@ def show_splash():
     os_version = os_info['data']['version']
     os_upgrade = os_info['data']['update_available']  
     if (os_upgrade == True):
-        os_version = os_version + "*"
+        os_version =  "*" + os_version 
 
     core_info = hassos_get_info('core/info')
     core_version = core_info['data']['version']  
     core_upgrade = os_info['data']['update_available']
     if (core_upgrade == True):
-        core_version =  core_version + "*"
+        core_version =  "*" + core_version
 
 
     # Draw a padded black filled box with style.border width.

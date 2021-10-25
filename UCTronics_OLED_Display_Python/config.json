@@ -1,6 +1,6 @@
 {
     "name": "UCTRONICS OLED Display (Python)",
-    "version": "2021.10.24.103",
+    "version": "2021.10.25.002",
     "slug": "uctronics_oled_display_python",
     "description": "This addon lets you display to your OLED provided in the UCTRONICS Pi Rack 4 with the ssd1306 OLED.",
     "arch": [
@@ -19,13 +19,13 @@
         "SYS_ADMIN"
     ],
     "devices": [
-        "/dev/i2c-1"
+        "/dev/i2c-*"
     ],
     "gpio": true,
     "stage": "experimental",
     "full_access": true,
     "url": "https://github.com/garethcheyne/HomeAssistant/tree/main/UCTronics_OLED_Display_Python",
-    "boot": "auto",
+    "boot": "manual",
     "options": {
         "Show_Splash_Screen": true,
         "Show_Network_Info": true,

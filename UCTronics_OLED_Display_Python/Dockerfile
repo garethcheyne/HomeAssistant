@@ -65,13 +65,12 @@ RUN pip3 install gpiozero
 RUN pip3 install adafruit-blinka
 RUN pip3 install adafruit-circuitpython-ssd1306
 RUN pip3 install pillow
+RUN pip3 install websocket-client
 
 COPY /python* /UCTronics_OLED/
 
 # S6-Overlay
 COPY start.sh /
-COPY run.sh /
 WORKDIR /data
 RUN chmod a+x /start.sh
-RUN chmod a+x /run.sh
 CMD [ "/start.sh" ]
