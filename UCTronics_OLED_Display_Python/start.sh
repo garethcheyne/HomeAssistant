@@ -17,8 +17,7 @@ if [ "$DISABLE_AUTO_START" = false ]; then
         cd /UCTronics_OLED/
         python3 display.py
     else
-        bashio::log.info "No i2c Access!! Please read the instructions.";
-   
+        bashio::log.info "No i2c Access!! Please read the instructions.";   
     fi 
 
 else
